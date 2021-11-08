@@ -1,6 +1,8 @@
-coinsearchr_env/
+venv/
 config.yaml
 *.sqlite
+*.sock
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
