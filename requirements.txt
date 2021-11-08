@@ -14,7 +14,10 @@ Flask-Caching
 
 pandas
 numpy
+pangres
+sqlalchemy
+#sqlite3
 
 requests
 
-sqlalchemy
+pyyaml

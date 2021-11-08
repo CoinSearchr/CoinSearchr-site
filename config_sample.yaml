@@ -1,0 +1,14 @@
+# Duplicate this file into ./config.yaml
+
+database:
+	db_path: /home/main/database.sqlite
+	db_type: sqlite3
+	
+
+updaters:
+	coingecko:
+		enable: true
+
+	coinmarketcap:
+		enable: true
+

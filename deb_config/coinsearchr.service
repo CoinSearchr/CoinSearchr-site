@@ -1,0 +1,15 @@
+[Unit]
+Description=Gunicorn for coinsearchr
+After=network.target
+
+[Service]
+User=main
+Group=www-data
+WorkingDirectory=/home/main/CoinSearchr-site
+Environment="PATH=/home/main/CoinSearchr-site/venv/bin"
+ExecStart=/home/main/CoinSearchr-site/venv/bin/gunicorn --workers 3 --bind unix:coinsearchr.sock -m 007 wsgi:app
+
+[Install]
+WantedBy=multi-user.target
+
+
