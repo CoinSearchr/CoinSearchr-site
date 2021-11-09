@@ -5,11 +5,20 @@ main > .container {
 }
 
 .crypto-logo {
-	max-width: 250px;
+	max-width: min(250px, 50%);
+	height: 125px;
+	width: auto;
+
+	/*
 	height: auto;
 	width: 50%;
+	*/
 
 	margin: 20px;
+
+	/* image-rendering: pixelated; */
+	image-rendering: crisp-edges;
+	image-rendering: -moz-crisp-edges;
 
 }
 

@@ -18,10 +18,15 @@ def format_currency_num(num: float) -> str:
 		return round(x, sig-int(floor(log10(abs(x))))-1)
 
 	def remove_dot0(num: float) -> str:
-		num = str(num)
-		if num.endswith('.0'):
-			return num[:-2]
-		return num
+		num_str = '{0:.12f}'.format(num) # avoid sci notation up to 20 places
+		if num_str.lower() == 'nan':
+			return '0'
+		num_str = num_str.rstrip('0')
+		if num_str.endswith('.'):
+			num_str = num_str[:-1]
+			if len(num_str) <= 2:
+				num_str += '.0'
+		return num_str
 
 	num = round_sig(num, 3)
 	if num > 1e12:
@@ -44,6 +49,13 @@ def time_ago(date_time) -> str:
 	if date_time <= now:
 		return dif + ' ago'
 	return 'in ' + dif # rare
+
+@app.context_processor
+def inject_global_vars():
+	""" These variables will be available in all templates. """
+	return {
+		'now': datetime.datetime.utcnow() # access with {{ now.year }}
+	}
 
 @app.route('/')
 def index():

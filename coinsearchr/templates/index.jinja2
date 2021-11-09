@@ -8,9 +8,19 @@
 			<div class="col-lg-6 col-md-8 mx-auto">
 				<h1 class="fw-light">CoinSearchr - an easy-to-use cryptocurrency search engine</h1>
 				<p class="lead text-muted">Start searching today.</p>
+
+				<form method="GET" action="/search">
+					<div class="input-group mb-3">
+						<input type="text" name="q" class="form-control" placeholder="Bitcoin, LTC, ..." aria-label="Enter cryptocurrency name to search" aria-describedby="basic-addon2">
+						<div class="input-group-append">
+							<button class="btn btn-primary" type="submit">Search</button>
+						</div>
+					</div>
+				</form>
+
 				<p>
-					<a href="#" class="btn btn-primary my-2">Main call to action</a>
-					<a href="#" class="btn btn-secondary my-2">Secondary action</a>
+					<a href="/convert" class="btn btn-secondary my-2">Go to Quick Converter</a>
+					<!-- <a href="#" class="btn btn-secondary my-2">Secondary action</a> -->
 				</p>
 			</div>
 		</div>

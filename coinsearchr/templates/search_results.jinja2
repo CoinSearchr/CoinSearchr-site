@@ -56,11 +56,13 @@
 									<span class="coin-data-value">{{ data['units_prefix']}}{{ row['low_24h'] | format_currency_num }}{{ data['units_suffix']}} to {{ data['units_prefix']}}{{ row['high_24h'] | format_currency_num }}{{ data['units_suffix']}}</span>
 								</li>
 							</ul>
+							<!--
 							<div class="card-body text-center">
-								<a onclick="javascript:expand_this_data_list()" class="card-link data-expand">Expand</a>
+								<a onclick="javascript:expand_this_data_list()" href="#" class="card-link data-expand">Expand</a>
 							</div>
+							--> {# TODO implement this expand button #}
 							<div class="card-footer">
-								<small class="text-muted">Last updated {{ row['last_updated'] | time_ago }}</small>
+								<small class="text-muted">Last updated {{ row['last_updated'] | time_ago }}</small> {# TODO change this to a JS auto-update thing for when people leave the tab open #}
 							</div>
 						</div>
 					</div>

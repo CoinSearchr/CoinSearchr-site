@@ -57,9 +57,12 @@ def doCoinGeckoCoinListDetailedUpdate():
 			df['page_num'] = pageNum
 
 			# parse date format
-			df[['atl_date', 'ath_date', 'last_updated']] = df[['atl_date', 'ath_date', 'last_updated']].apply(pd.to_datetime)
+			date_cols = ['atl_date', 'ath_date', 'last_updated']
+			df[date_cols] = df[date_cols].apply(pd.to_datetime)
 
 			df = df.set_index(['source', 'base_currency', 'id'])
+
+			df = df.drop(columns=['roi']) # try dropping that JSON column in case that's what's causing the overflow error # TODO expand this JSON col out or something
 
 			pangres.upsert(engine=sql_engine, df=df, table_name='coin_list_detail', if_row_exists='update', create_schema=False, add_new_columns=False, adapt_dtype_of_empty_db_columns=False)
 
