@@ -12,3 +12,5 @@ updaters:
   coinmarketcap:
     enable: true
 
+search:
+  max_query_results: 50

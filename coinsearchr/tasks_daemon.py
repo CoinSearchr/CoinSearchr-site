@@ -7,9 +7,9 @@ import time
 
 import logging
 
-import update_coins_coingecko
+from . import update_coins_coingecko
 
-logging.basicConfig(format='%(asctime)s :: %(name)s :: %(levelname)-8s :: %(message)s', level=logging.INFO)
+logging.basicConfig(format='%(asctime)s :: %(levelname)-8s :: %(name)s :: %(message)s', level=logging.INFO)
 
 logger = logging.getLogger(__name__)
 
@@ -17,10 +17,10 @@ if __name__ == '__main__':
 	logger.info('Starting all updates at the start.')
 	update_coins_coingecko.runAllCoinGeckoUpdates()
 	
-	schedule.every(10).minutes.do(update_coins_coingecko.runAllCoinGeckoUpdates)
+	schedule.every(5).minutes.do(update_coins_coingecko.runAllCoinGeckoUpdates) # this long after the end of the previous 7-minute run
 	# TODO consider upgrading to a threaded scheduler if we ever want concurrent execution
 
 	while 1:
 		schedule.run_pending()
 
-		time.sleep(1)
+		time.sleep(10)

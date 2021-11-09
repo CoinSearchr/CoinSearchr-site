@@ -8,7 +8,7 @@ import datetime
 from ratelimit import limits, RateLimitException
 from backoff import on_exception, expo
 
-import db
+from . import db
 
 logger = logging.getLogger(__name__)
 
@@ -67,5 +67,8 @@ def doCoinGeckoCoinListDetailedUpdate():
 	logger.info('Done CoinGecko coin list detailed update.')
 
 def runAllCoinGeckoUpdates():
+	logger.info('Starting full Coin Gecko update.')
 	doCoinGeckoCoinListUpdate()
 	doCoinGeckoCoinListDetailedUpdate()
+	logger.info('Done full Coin Gecko update.')
+	

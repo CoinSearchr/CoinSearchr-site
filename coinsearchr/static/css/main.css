@@ -1,6 +1,13 @@
 
 
 main > .container {
-	padding: 60px 15px 0;
+	padding: 45px 15px 0;
 }
 
+.crypto-logo {
+	max-width: 250px;
+	height: auto;
+
+	margin: 20px;
+
+}

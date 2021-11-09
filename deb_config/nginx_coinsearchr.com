@@ -34,3 +34,21 @@ server {
 
 
 }
+
+# Created for HTTPS Dev
+server {
+    server_name coinsearchr.com www.coinsearchr.com;
+
+    location / {
+        include proxy_params;
+        proxy_pass http://localhost:5000;
+    }
+
+    listen 5001 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/coinsearchr.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/coinsearchr.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
