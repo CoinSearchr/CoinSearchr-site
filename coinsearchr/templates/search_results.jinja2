@@ -3,86 +3,60 @@
 {% block title %} '{{ data["search_term"] }}' Search {% endblock %}
 
 {% block content %}
-	<h1 class="mt-5">'{{ data["search_term"] }}' Search Results</h1>
-	<h2>{{ df.index | length }}{{ data["show_plus_on_result_count"] }} cryptocurrency matches found.
-	
-		{#
-		{% for _, row in df.iterrows() %}
-			<div class="col-sm-3">
-				<div class="card">
-					<img src="{{ row['image'] }}" class="card-img-top" alt="{{ row['name'] }} logo">
-					<div class="card-body">
-						<h5 class="card-title">{{ row['name'] }}</h5>
-						<p class="card-text">Loreum ipsone de the green lazy log jumped over a dog.</p>
-						<a href="{{ row[''] }}" class="btn btn-primary">View on CoinGecko</a>
-					</div>
 
-					<ul class="list-group list-group-flush">
-						<li class="list-group-item">An item</li>
-						<li class="list-group-item">A second item</li>
-						<li class="list-group-item">A third item</li>
-					</ul>
-					<div class="card-body">
-						<a href="#" class="card-link">Card link</a>
-						<a href="#" class="card-link">Another link</a>
-					</div>
-
-
-					<div class="card-footer">
-						<small class="text-muted">Last updated 3 mins ago</small>
-					</div>
-					
-				</div>
-			</div>
-		{% endfor %}
-		#}
-		
-		<div class="">
-			<div class="container">
-
-				<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
-					{% for _, row in df.iterrows() %}
-
-						<div class="col">
-							<div class="card shadow-sm text-center">
-								<img src="{{ row['image'] }}" class="card-img-top crypto-logo mx-auto" alt="{{ row['name'] }} logo">
-
-								<div class="card-body">
-									<p class="card-text">{{ row['name'] }}</p>
-									<div class="d-flex justify-content-between align-items-center">
-										<div class="btn-group">
-											<button type="button" class="btn btn-sm btn-outline-secondary">View on CoinGecko</button>
-										</div>
-									</div>
-								</div>
-
-
-								<ul class="list-group list-group-flush">
-									<li class="list-group-item">An item</li>
-									<li class="list-group-item">A second item</li>
-									<li class="list-group-item">A third item</li>
-								</ul>
-								<div class="card-body">
-									<a href="#" class="card-link">Card link</a>
-									<a href="#" class="card-link">Another link</a>
-								</div>
-
-
-								<div class="card-footer">
-									<small class="text-muted">Last updated 3 mins ago</small>
-								</div>
-
-							</div>
-						</div>
-
-					{% endfor %}
-
-				</div>
+	<section class="py-5 text-center container">
+		<div class="row py-lg-5">
+			<div class="col-lg-6 col-md-8 mx-auto">
+				<h1 class="fw-light">'{{ data["search_term"] }}' Search Results</h1>
+				<p class="lead text-muted">{{ df.index | length }}{{ data["show_plus_on_result_count"] }} cryptocurrency matches found.</p>
+				<p>
+					<a href="#" class="btn btn-primary my-2">Main call to action</a>
+					<a href="#" class="btn btn-secondary my-2">Secondary action</a>
+				</p>
 			</div>
 		</div>
+	</section>
+
+	<div class="album py-5 bg-light">
+		<div class="container">
+
+			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+
+				{% for _, row in df.iterrows() %}
+					<div class="col">
+						<div class="card shadow-sm">
+							<img src="{{ row['image'] }}" class="card-img-top crypto-logo mx-auto" alt="{{ row['name'] }} logo">
 
 
+							<div class="card-body">
+								<h5 class="card-title">{{ row['name'] }}</h5>
+								<p class="card-text">This is a wider card with supporting text.</p>
+								<div class="d-flex justify-content-between align-items-center">
+									<div class="btn-group">
+										<button type="button" class="btn btn-sm btn-outline-secondary">View on CoinGecko</button>
+										<button type="button" class="btn btn-sm btn-outline-secondary">Quick Conversion</button>
+									</div>
+								</div>
+							</div>
+
+
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item">An item</li>
+								<li class="list-group-item">A second item</li>
+								<li class="list-group-item">A third item</li>
+							</ul>
+							<div class="card-body">
+								<a href="#" class="card-link">Card link</a>
+								<a href="#" class="card-link">Another link</a>
+							</div>
+							<div class="card-footer">
+								<small class="text-muted">Last updated 3 mins ago</small>
+							</div>
+						</div>
+					</div>
+
+				{% endfor %}
+			</div>
+		</div>
 	</div>
-	
 {% endblock %}
