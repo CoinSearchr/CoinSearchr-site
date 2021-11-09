@@ -7,7 +7,16 @@ main > .container {
 .crypto-logo {
 	max-width: 250px;
 	height: auto;
+	width: 50%;
 
 	margin: 20px;
 
+}
+
+.coin-data-label {
+	float: left;
+}
+.coin-data-value {
+	float: right;
+	font-weight: bold;
 }

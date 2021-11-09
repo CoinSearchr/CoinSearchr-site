@@ -4,15 +4,17 @@
 
 {% block content %}
 
-	<section class="py-5 text-center container">
-		<div class="row py-lg-5">
+	<section class="py-2 text-center container">
+		<div class="row py-lg-1">
 			<div class="col-lg-6 col-md-8 mx-auto">
 				<h1 class="fw-light">'{{ data["search_term"] }}' Search Results</h1>
 				<p class="lead text-muted">{{ df.index | length }}{{ data["show_plus_on_result_count"] }} cryptocurrency matches found.</p>
+				<!--
 				<p>
 					<a href="#" class="btn btn-primary my-2">Main call to action</a>
 					<a href="#" class="btn btn-secondary my-2">Secondary action</a>
 				</p>
+				-->
 			</div>
 		</div>
 	</section>
@@ -24,33 +26,44 @@
 
 				{% for _, row in df.iterrows() %}
 					<div class="col">
-						<div class="card shadow-sm">
+						<div class="card shadow-sm h-100">
 							<img src="{{ row['image'] }}" class="card-img-top crypto-logo mx-auto" alt="{{ row['name'] }} logo">
 
 
 							<div class="card-body">
 								<h5 class="card-title">{{ row['name'] }}</h5>
-								<p class="card-text">This is a wider card with supporting text.</p>
+								<!-- <p class="card-text">This is a wider card with supporting text.</p> -->
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">
-										<button type="button" class="btn btn-sm btn-outline-secondary">View on CoinGecko</button>
-										<button type="button" class="btn btn-sm btn-outline-secondary">Quick Conversion</button>
+										<a role="button" href="https://www.coingecko.com/en/coins/{{ row['id'] }}" class="btn btn-sm btn-primary">View on CoinGecko</a>
+										<button type="button" class="btn btn-sm btn-primary">Quick Conversion</button>
 									</div>
 								</div>
 							</div>
 
 
 							<ul class="list-group list-group-flush">
-								<li class="list-group-item">An item</li>
-								<li class="list-group-item">A second item</li>
-								<li class="list-group-item">A third item</li>
+								<li class="list-group-item">
+									<span class="coin-data-label">Price</span>
+									<span class="coin-data-value">{{ data['units_prefix']}}{{ row['current_price'] | format_currency_num }}{{ data['units_suffix']}}</span>
+								</li>
+								<li class="list-group-item">
+									<span class="coin-data-label">Market Cap</span>
+									<span class="coin-data-value">{{ data['units_prefix']}}{{ row['market_cap'] | format_currency_num }}{{ data['units_suffix']}}</span>
+								</li>
+								<li class="list-group-item">
+									<span class="coin-data-label">24h Price</span>
+									<span class="coin-data-value">{{ data['units_prefix']}}{{ row['low_24h'] | format_currency_num }}{{ data['units_suffix']}} to {{ data['units_prefix']}}{{ row['high_24h'] | format_currency_num }}{{ data['units_suffix']}}</span>
+								</li>
 							</ul>
+							<!--
 							<div class="card-body">
 								<a href="#" class="card-link">Card link</a>
 								<a href="#" class="card-link">Another link</a>
 							</div>
+							-->
 							<div class="card-footer">
-								<small class="text-muted">Last updated 3 mins ago</small>
+								<small class="text-muted">Last updated {{ row['last_updated'] | time_ago }}</small>
 							</div>
 						</div>
 					</div>
