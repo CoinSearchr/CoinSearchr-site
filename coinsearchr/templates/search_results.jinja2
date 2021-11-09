@@ -31,7 +31,7 @@
 
 
 							<div class="card-body">
-								<h5 class="card-title">{{ row['name'] }}</h5>
+								<h5 class="card-title">{{ row['name'] }} ({{ row['symbol'] | upper }})</h5>
 								<!-- <p class="card-text">This is a wider card with supporting text.</p> -->
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">
@@ -56,12 +56,9 @@
 									<span class="coin-data-value">{{ data['units_prefix']}}{{ row['low_24h'] | format_currency_num }}{{ data['units_suffix']}} to {{ data['units_prefix']}}{{ row['high_24h'] | format_currency_num }}{{ data['units_suffix']}}</span>
 								</li>
 							</ul>
-							<!--
-							<div class="card-body">
-								<a href="#" class="card-link">Card link</a>
-								<a href="#" class="card-link">Another link</a>
+							<div class="card-body text-center">
+								<a onclick="javascript:expand_this_data_list()" class="card-link data-expand">Expand</a>
 							</div>
-							-->
 							<div class="card-footer">
 								<small class="text-muted">Last updated {{ row['last_updated'] | time_ago }}</small>
 							</div>
@@ -73,3 +70,14 @@
 		</div>
 	</div>
 {% endblock %}
+
+
+{% block tail_scripts %}
+	<script>
+		function expand_this_data_list() {
+			alert("Someone should implement this.");
+		}
+	</script>
+
+{% endblock %}
+

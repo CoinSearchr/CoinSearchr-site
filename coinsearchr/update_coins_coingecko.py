@@ -56,6 +56,9 @@ def doCoinGeckoCoinListDetailedUpdate():
 			df['base_currency'] = currency
 			df['page_num'] = pageNum
 
+			# parse date format
+			df[['atl_date', 'ath_date', 'last_updated']] = df[['atl_date', 'ath_date', 'last_updated']].apply(pd.to_datetime)
+
 			df = df.set_index(['source', 'base_currency', 'id'])
 
 			pangres.upsert(engine=sql_engine, df=df, table_name='coin_list_detail', if_row_exists='update', create_schema=False, add_new_columns=False, adapt_dtype_of_empty_db_columns=False)

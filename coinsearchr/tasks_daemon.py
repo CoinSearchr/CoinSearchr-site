@@ -13,7 +13,8 @@ logging.basicConfig(format='%(asctime)s :: %(levelname)-8s :: %(name)s :: %(mess
 
 logger = logging.getLogger(__name__)
 
-if __name__ == '__main__':
+def run_tasks():
+
 	logger.info('Starting all updates at the start.')
 	update_coins_coingecko.runAllCoinGeckoUpdates()
 	
@@ -24,3 +25,9 @@ if __name__ == '__main__':
 		schedule.run_pending()
 
 		time.sleep(10)
+
+
+if __name__ == '__main__':
+	# TODO confirm if this working anymore after the manage.py upgrade
+	run_tasks()
+	

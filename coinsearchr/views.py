@@ -5,11 +5,13 @@ from . import searcher
 from . import db
 
 from math import log10, floor, isnan
-import re
+import datetime, time
+import humanize
 
 @app.template_filter()
 def format_currency_num(num: float) -> str:
 	""" Formats numbers nicely of all orders of magnitude. """
+	# TODO replace this with the humanize library
 	def round_sig(x, sig=2):
 		if x<=0 or not x or isnan(x):
 			return x
@@ -34,7 +36,14 @@ def format_currency_num(num: float) -> str:
 
 @app.template_filter()
 def time_ago(date_time) -> str:
-	return "3 minutes ago"
+	# https://stackoverflow.com/a/11157649
+	now = datetime.datetime.now()
+	if type(date_time) is str:
+		date_time = datetime.datetime.fromisoformat(date_time)
+	dif = humanize.naturaldelta(now - date_time)
+	if date_time <= now:
+		return dif + ' ago'
+	return 'in ' + dif # rare
 
 @app.route('/')
 def index():
