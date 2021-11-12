@@ -23,6 +23,7 @@ CREATE TABLE coin_list_detail (
 	source TEXT NOT NULL, 
 	base_currency TEXT NOT NULL, 
 	id TEXT NOT NULL, 
+	num_id BIGINT, -- numeric ID for CoinGecko
 	symbol TEXT, 
 	name TEXT, 
 	image TEXT, 
@@ -46,11 +47,12 @@ CREATE TABLE coin_list_detail (
 	atl FLOAT, 
 	atl_change_percentage FLOAT, 
 	atl_date DATETIME, 
-	roi JSON, 
+	roi TEXT, 
 	last_updated DATETIME, 
 	price_change_percentage_1h_in_currency FLOAT, 
 	price_change_percentage_24h_in_currency FLOAT, 
 	price_change_percentage_7d_in_currency FLOAT, 
+	sparkline_in_7d TEXT, -- associative array with key 'price' containing an array of n prices
 	date DATETIME, 
 	page_num BIGINT, 
 	PRIMARY KEY (source, base_currency, id)

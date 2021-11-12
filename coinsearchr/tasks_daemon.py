@@ -1,4 +1,5 @@
 # Run this file as a daemon. It will do everything necessary in the background and keep things going.
+# Use manage.py to call this file.
 
 import pandas as pd
 import requests
@@ -8,8 +9,6 @@ import time
 import logging
 
 from . import update_coins_coingecko
-
-logging.basicConfig(format='%(asctime)s :: %(levelname)-8s :: %(name)s :: %(message)s', level=logging.INFO)
 
 logger = logging.getLogger(__name__)
 
@@ -26,8 +25,3 @@ def run_tasks():
 
 		time.sleep(10)
 
-
-if __name__ == '__main__':
-	# TODO confirm if this working anymore after the manage.py upgrade
-	run_tasks()
-	

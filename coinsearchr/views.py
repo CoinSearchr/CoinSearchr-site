@@ -63,8 +63,8 @@ def index():
 
 @app.route('/search', methods=['GET']) # args: q=search_term, json=true, currency=usd+, 
 def search():
-	arg_search_term = request.args.get('q', '')
-	arg_currency = request.args.get('currency', 'usd').lower()
+	arg_search_term = request.args.get('q', '').strip()
+	arg_currency = request.args.get('currency', 'usd').lower().strip()
 
 	df = searcher.search_in_database_ranked(arg_search_term, arg_currency)
 	# TODO check if currency is valid, default if it's not valid
@@ -88,3 +88,9 @@ def search():
 	else:
 		return render_template("search_results.jinja2", df=df, data=data)
 		
+
+@app.route('/convert')
+def convert():
+	# FIXME implement this Quick Convert page
+	return render_template("index.jinja2")
+

@@ -7,6 +7,7 @@ CoinSearchr Flask site to serve the search engine
 
 ## Common Tasks
 * Run the dev server like `python3 wsgi.py`, and access it through the nginx HTTPS port forwarder on https://coinsearchr.com:5001/
+* Do management actions with `python3 manage.py -h` (like `python3 manage.py -a init_db` and `python3 manage.py -a run_tasks`)
 
 ## Server Notes
 * Server must be in Etc/UTC time
