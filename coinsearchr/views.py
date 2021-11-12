@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, make_response
 
 from . import app
 from . import searcher
@@ -6,6 +6,7 @@ from . import db
 
 from math import log10, floor, isnan
 import datetime, time
+import re
 import humanize
 
 @app.template_filter()
@@ -50,6 +51,19 @@ def time_ago(date_time) -> str:
 		return dif + ' ago'
 	return 'in ' + dif # rare
 
+
+bar = '▁▂▃▄▅▆▇█'
+barcount = len(bar)
+def sparkline(numbers: list) -> str:
+	""" Make a sparkline from a list of numbers. https://rosettacode.org/wiki/Sparkline_in_unicode""" 
+	mn, mx = min(numbers), max(numbers)
+	extent = mx - mn
+	sparkline = ''.join(bar[min([barcount - 1,
+								 int((n - mn) / extent * barcount)])]
+						for n in numbers)
+	#return mn, mx, sparkline
+	return sparkline
+
 @app.context_processor
 def inject_global_vars():
 	""" These variables will be available in all templates. """
@@ -61,10 +75,19 @@ def inject_global_vars():
 def index():
 	return render_template("index.jinja2")
 
-@app.route('/search', methods=['GET']) # args: q=search_term, json=true, currency=usd+, 
-def search():
-	arg_search_term = request.args.get('q', '').strip()
-	arg_currency = request.args.get('currency', 'usd').lower().strip()
+
+
+def search_ctrl(request_args, output_type):
+	arg_search_term_orig = request.args.get('q') # required for 'sanity check' by browser in suggestion mode
+	arg_search_term = arg_search_term_orig.strip() # clean
+	arg_currency = request_args.get('currency', 'usd').lower().strip()
+
+	# remove garbage from search request from the suggestions
+	s = re.search(r'(.+)\s+[(].+[)] [|]', arg_search_term)
+	try:
+		arg_search_term = s.group(1)
+	except:
+		pass
 
 	df = searcher.search_in_database_ranked(arg_search_term, arg_currency)
 	# TODO check if currency is valid, default if it's not valid
@@ -82,12 +105,54 @@ def search():
 	else:
 		data['units_suffix'] = arg_currency.upper()
 
-	if request.args.get('json', 'false').lower() == 'true':
+	if output_type == 'json':
 		return jsonify(df.to_dict('records'))
 
-	else:
+	elif output_type == 'html':
 		return render_template("search_results.jinja2", df=df, data=data)
-		
+
+	elif output_type == 'suggest_json':
+		df = df.head(5)
+
+		if not df.empty:
+			results = df.apply(lambda d: f"{d['name']} ({d['symbol'].upper()}) | {data['units_prefix']}{format_currency_num(d['current_price'])}{data['units_suffix']} | Mkt Cap: {data['units_prefix']}{format_currency_num(d['market_cap'])}{data['units_suffix']}", axis=1)
+			results = results.to_list()
+		else:
+			results = []
+			
+		out = [
+			arg_search_term_orig,
+			results,
+		]
+
+		resp = make_response(jsonify(out))
+		resp.headers['Content-Type'] = 'application/x-suggestions+json'
+		return resp
+
+
+@app.route('/search', methods=['GET']) # args: q=search_term, json=true, currency=usd+, 
+def search():
+	output_type = 'json' if request.args.get('json', 'false').lower() == 'true' else 'html'
+	return search_ctrl(request.args, output_type)
+	
+
+@app.route('/suggest', methods=['GET']) # args: q=search_term
+def suggest():
+	"""
+	Provide JSON search suggestions.
+
+	Resources on Spec:
+	- http://wiki.mozilla.org/Search_Service/Suggestions
+	- Descriptor: https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md#opensearch-11-parameters
+	"""
+	return search_ctrl(request.args, 'suggest_json')
+
+# @app.route('/coinsearchr-opensearch.xml')
+# def opensearch_descriptor():
+# 	# TODO optimize this with static file serving, but use the correct Content-Type
+# 	resp = make_response(render_template('coinsearchr-opensearch.xml'))
+# 	resp.headers['Content-Type'] = 'application/opensearchdescription+xml'
+# 	return resp
 
 @app.route('/convert')
 def convert():
