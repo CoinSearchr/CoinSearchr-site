@@ -119,7 +119,7 @@ def search_ctrl(request_args, output_type):
 			results = results.to_list()
 		else:
 			results = []
-			
+
 		out = [
 			arg_search_term_orig,
 			results,
@@ -144,6 +144,7 @@ def suggest():
 	Resources on Spec:
 	- http://wiki.mozilla.org/Search_Service/Suggestions
 	- Descriptor: https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md#opensearch-11-parameters
+	- https://developer.mozilla.org/en-US/docs/Web/OpenSearch
 	"""
 	return search_ctrl(request.args, 'suggest_json')
 
