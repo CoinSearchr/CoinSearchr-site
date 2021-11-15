@@ -2,7 +2,7 @@ venv/
 config.yaml
 *.sqlite
 *.sock
-
+*.sqlite-journal
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
