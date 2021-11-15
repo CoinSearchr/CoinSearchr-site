@@ -16,6 +16,11 @@
 		<link rel="search" type="application/opensearchdescription+xml" title="CoinSearchr" href="https://coinsearchr.com/static/xml/coinsearchr-opensearch.xml">
 		
 		<!-- Favicons -->
+		<link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+		<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+		<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}">
+		<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png') }}">
+		<link rel="manifest" href="{{ url_for('static', filename='other/site.webmanifest') }}">
 		
 		<!--
 		<style>
@@ -65,7 +70,7 @@
 			<div class="navbar navbar-dark bg-dark shadow-sm">
 				<div class="container">
 					<a href="/" class="navbar-brand d-flex align-items-center">
-						<!-- Logo goes here -->
+						<img src="/static/img/logo-48x48.png" width="48" height="48" alt="CoinSearchr" style="margin-right: 20px;" />
 						<strong>CoinSearchr</strong>
 					</a>
 					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"

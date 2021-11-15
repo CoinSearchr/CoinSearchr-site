@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, make_response
+from flask import Flask, render_template, jsonify, request, make_response, url_for, send_from_directory
 
 from . import app
 from . import searcher
@@ -7,6 +7,7 @@ from . import db
 from math import log10, floor, isnan
 import datetime, time
 import re
+import os
 import humanize
 
 @app.template_filter()
@@ -160,3 +161,8 @@ def convert():
 	# FIXME implement this Quick Convert page
 	return render_template("index.jinja2")
 
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static', 'img'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')

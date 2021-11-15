@@ -3,6 +3,8 @@
   <ShortName>CoinSearchr</ShortName>
   <Description>CoinSearchr - an easy-to-use cryptocurrency search engine</Description>
   <InputEncoding>[UTF-8]</InputEncoding>
+  <Image width="32" height="32" type="image/png">https://coinsearchr.com/static/img/favicon-32x32.png</Image>
+  <Image width="16" height="16" type="image/png">https://coinsearchr.com/static/img/favicon-16x16.png</Image>
   <Image width="16" height="16" type="image/x-icon">https://coinsearchr.com/favicon.ico</Image>
   <Url type="text/html" template="https://coinsearchr.com/search/">
     <Param name="q" value="{searchTerms}"/>
