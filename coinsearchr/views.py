@@ -172,13 +172,6 @@ def suggest():
 	"""
 	return search_ctrl(request.args, 'suggest_json')
 
-# @app.route('/coinsearchr-opensearch.xml')
-# def opensearch_descriptor():
-# 	# TODO optimize this with static file serving, but use the correct Content-Type
-# 	resp = make_response(render_template('coinsearchr-opensearch.xml'))
-# 	resp.headers['Content-Type'] = 'application/opensearchdescription+xml'
-# 	return resp
-
 @app.route('/convert')
 def convert():
 	# FIXME implement this Quick Convert page
@@ -189,3 +182,9 @@ def convert():
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static', 'img'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+@app.route('/privacy')
+@app.route('/privacypolicy')
+@app.route('/privacy-policy')
+def privacypolicy():
+	return render_template("privacypolicy.jinja2")
