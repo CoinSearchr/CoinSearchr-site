@@ -192,6 +192,16 @@ def contact():
 	return render_template("contact.jinja2")
 
 
+@app.route('/guide/firefox')
+def guide_firefox():
+	return render_template("guide_firefox.jinja2")
+
+@app.route('/guide/vivaldi')
+def guide_vivaldi():
+	return render_template("guide_vivaldi.jinja2")
+
+
+
 
 @app.route('/favicon.ico')
 def favicon():

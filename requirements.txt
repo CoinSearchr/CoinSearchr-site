@@ -4,7 +4,7 @@ gunicorn
 
 Flask
 Flask-Caching
-
+Flask-Markdown
 #Flask-Appconfig
 #Flask-Bootstrap
 #Flask-Nav

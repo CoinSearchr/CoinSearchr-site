@@ -1,0 +1,29 @@
+{% extends 'base.jinja2' %}
+
+{% block title %} Guide: Add to Firefox {% endblock %}
+
+{% block content %}
+	<section class="py-3 container">
+		<div class="row py-lg-5">
+			<div class="col-lg-8 col-md-12 mx-auto">
+				<h1 class="fw-light text-center">Add CoinSearchr to Firefox</h1>
+				<p class="lead text-muted text-center">Easily search cryptocurrencies natively from within Firefox.</p>
+
+				<div class="text-left">
+
+{% filter markdown %}
+1. **Add:** From this page, right-click in the URL bar, and select "Add CoinSearchr".
+2. **Configure:** Go to the Hamburger Menu in the top-right corner > Settings > Search > Search Shortcuts, and assign a Keyword Shortcut (e.g., "cs") to the CoinSearchr search engine.
+3. **Search:** To search using CoinSearchr, go to the address bar, and type "cs", followed by your search term. For example, type "cs dogecoin" into the address bar.
+4. **Get Suggestions:** As you type, suggestions will pop up. Select any suggestion to view more details for that coin, or preview the Price and Market Cap from the suggestion.
+
+More details can be found in Mozilla's "Add a search engine from the address bar" guide on <a href="https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox#w_add-a-search-engine-from-the-address-bar" target="_blank">Mozilla's support site.</a>
+
+{% endfilter %}
+				</div>
+
+
+			</div>
+		</div>
+	</section>
+{% endblock %}

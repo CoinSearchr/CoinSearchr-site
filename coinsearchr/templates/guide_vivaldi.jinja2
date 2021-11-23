@@ -1,0 +1,35 @@
+{% extends 'base.jinja2' %}
+
+{% block title %} Guide: Add to Vivaldi {% endblock %}
+
+{% block content %}
+	<section class="py-3 container">
+		<div class="row py-lg-5">
+			<div class="col-lg-8 col-md-12 mx-auto">
+				<h1 class="fw-light text-center">Add CoinSearchr to Vivaldi Browser</h1>
+				<p class="lead text-muted text-center">Easily search cryptocurrencies natively from within Vivaldi Browser.</p>
+
+				<div class="text-left">
+
+{% filter markdown %}
+1. **Add to Vivaldi**
+    1. Click the Gear in the bottom-left corner.
+    2. Go to "Search".
+    3. Click the "+" button in "Search Engines" to add a new Search Engine.
+    4. Fill out the following properties:
+        * **Name:** `CoinSearchr`
+        * **Nickname:** `cs`
+        * **URL:** `https://coinsearchr.com/search?q=%s`
+        * **Suggest URL:** `https://coinsearchr.com/suggest?q=%s`
+    5. In the "Allow Search Suggestions" section, check all three boxes ("In Address Field", "Only when Using Search Engine Nickname", and "In Search Field").
+2. **Search:** To search using CoinSearchr, go to the address bar, and type "cs", followed by your search term. For example, type "cs dogecoin" into the address bar.
+3. **Get Suggestions:** As you type, suggestions will pop up. Select any suggestion to view more details for that coin, or preview the Price and Market Cap from the suggestion.
+
+{% endfilter %}
+				</div>
+
+
+			</div>
+		</div>
+	</section>
+{% endblock %}

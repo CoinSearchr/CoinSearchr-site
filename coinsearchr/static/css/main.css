@@ -4,6 +4,10 @@ main > .container {
 	padding: 45px 15px 0;
 }
 
+ol > li {
+	padding-top: 0.5em;
+}
+
 /* Search Results Page */
 
 .crypto-logo {

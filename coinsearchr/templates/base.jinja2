@@ -51,9 +51,18 @@
 								<a class="nav-link" href="/convert">Quick Converter</a>
 							</li>
 
-							<li class="nav-item">
-								<a class="nav-link" href="/guide/">Add to Browser</a>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Add to Browser
+								</a>
+								<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+									<li><a class="dropdown-item" href="/guide/firefox">Guide: Add to Firefox</a></li>
+									<li><a class="dropdown-item" href="/guide/vivaldi">Guide: Add to Vivaldi Browser</a></li>
+									<!--<li><hr class="dropdown-divider"></li>
+									<li><a class="dropdown-item" href="#">Add to Firefox</a></li>-->
+								</ul>
 							</li>
+
 							<li class="nav-item">
 								<a class="nav-link" href="/contact">Contact</a>
 							</li>
@@ -61,7 +70,7 @@
 
 						<form method="GET" action="/search">
 							<div class="input-group me-3">
-								<input type="text" name="q" class="form-control" placeholder="Bitcoin, LTC, ..." aria-label="Enter cryptocurrency name to search" autofocus>
+								<input type="text" name="q" class="form-control" placeholder="Bitcoin, LTC, ..." aria-label="Enter cryptocurrency name to search">
 								<div class="input-group-append">
 									<button class="btn btn-primary" type="submit">Search</button>
 								</div>
@@ -85,7 +94,7 @@
 				</p>
 				--> {# TODO JS hide this if it's less than 2 screenfuls, but show otherwise #}
 				<p class="mb-1">&copy; CoinSearchr {{ now.year }} | <a href="{{ url_for('privacypolicy') }}">Privacy Policy</a> | <a href="{{ url_for('contact') }}">Contact</a></p>
-				<p class="mb-0">CoinSearchr is an up-and-coming cryptocurrency search tool, designed to fill the need for OpenSearch-compatible cryptocurrency search tools. It was created in 2021 by a disgruntled programmer who just wanted to search CoinMarketCap from Vivaldi Browser's command bar.</p>
+				<p class="mb-0">CoinSearchr is an up-and-coming cryptocurrency search and conversion tool, designed to fill the need for OpenSearch-compatible cryptocurrency search tools. CoinSearchr fills the gap between your web browser's native search functionality, and existing coin explorers like CoinGecko. CoinSearchr was created in 2021 by a disgruntled programmer who just wanted to search CoinMarketCap from Vivaldi Browser's command bar.</p>
 			</div>
 		</footer>
 
