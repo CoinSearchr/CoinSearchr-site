@@ -14,3 +14,27 @@ updaters:
 
 search:
   max_query_results: 50
+
+
+currencies:
+  usd:
+    description: US Dollars
+    display: USD
+    prefix: $
+    suffix: ''
+  eur:
+    description: Euros
+    display: EUR
+    prefix: ''
+    suffix: ' EUR'
+  jpy:
+    description: Japanese Yen
+    display: JPY
+    prefix: ''
+    suffix: ' JPY'
+  cad:
+    description: Canadian Dollars
+    display: CAD
+    prefix: 'CAD $'
+    suffix: ''
+    

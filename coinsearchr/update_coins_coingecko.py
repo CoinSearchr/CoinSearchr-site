@@ -46,7 +46,7 @@ def doCoinGeckoCoinListUpdate():
 def doCoinGeckoCoinListDetailedUpdate():
 	logger.info('Starting CoinGecko coin list detailed update.')
 
-	for currency in ['usd', 'eur', 'jpy', 'cad']:
+	for currency in db.config['currencies'].keys(): # ['usd', ...]
 		pageNum = 1
 		while len(coinsList := call_api(f'https://api.coingecko.com/api/v3/coins/markets?vs_currency={currency}&order=market_cap_desc&per_page=240&page={pageNum}&sparkline=false&price_change_percentage=1h%2C24h%2C7d')) > 0:
 

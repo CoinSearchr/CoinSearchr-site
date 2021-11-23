@@ -98,9 +98,13 @@ def search_ctrl(request_args, output_type):
 	except:
 		pass
 
-	df = searcher.search_in_database_ranked(arg_search_term, arg_currency)
-	# TODO check if currency is valid, default if it's not valid
+	# check if currency is valid, default if it's not valid
+	if arg_currency not in db.config['currencies'].keys():
+		# invalid currency, assume 'usd'
+		arg_currency = 'usd'
 
+	df = searcher.search_in_database_ranked(arg_search_term, arg_currency)
+	
 	data = {
 		'show_plus_on_result_count': '+' if len(df.index) >= db.max_query_results else '',
 		'search_term': arg_search_term,
@@ -109,10 +113,8 @@ def search_ctrl(request_args, output_type):
 		'units_suffix': '',
 	}
 
-	if arg_currency == 'usd':
-		data['units_prefix'] = '$'
-	else:
-		data['units_suffix'] = arg_currency.upper()
+	data['units_prefix'] = db.config['currencies'][arg_currency]['prefix']
+	data['units_suffix'] = db.config['currencies'][arg_currency]['suffix']
 
 	if output_type == 'json':
 		return jsonify(df.to_dict('records'))
