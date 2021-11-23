@@ -9,16 +9,21 @@ import time
 import logging
 
 from . import update_coins_coingecko
+from . import update_other_tasks
 
 logger = logging.getLogger(__name__)
 
 def run_tasks():
 
 	logger.info('Starting all updates at the start.')
+	update_other_tasks.do_delete_old_coin_rows()
 	update_coins_coingecko.runAllCoinGeckoUpdates()
 	
 	schedule.every(5).minutes.do(update_coins_coingecko.runAllCoinGeckoUpdates) # this long after the end of the previous 7-minute run
-	# TODO consider upgrading to a threaded scheduler if we ever want concurrent execution
+
+	schedule.every(6).hours.do(update_other_tasks.do_delete_old_coin_rows)
+
+	# TODO consider upgrading to a threaded scheduler if we ever want concurrent execution (Issue #5, partly)
 
 	while 1:
 		schedule.run_pending()
