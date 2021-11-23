@@ -1,0 +1,14 @@
+[Unit]
+Description=Repeating Tasks for CoinSearchr
+After=network.target
+
+[Service]
+User=main
+WorkingDirectory=/home/main/CoinSearchr-site
+Environment="PATH=/home/main/CoinSearchr-site/venv/bin"
+ExecStart=/home/main/CoinSearchr-site/venv/bin/python /home/main/CoinSearchr-site/manage.py -a run_tasks
+
+[Install]
+WantedBy=multi-user.target
+
+
