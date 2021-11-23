@@ -53,6 +53,13 @@ def time_ago(date_time) -> str:
 		return dif + ' ago'
 	return 'in ' + dif # rare
 
+@app.template_filter()
+def make_rank_text(rank) -> str:
+	""" Makes text like `(#1)` or `(#inf)` from a rank, where rank is a float, int, or NaN. """
+	if pd.isna(rank) or rank < 0.5:
+		return "(#\u221e)"
+	else:
+		return f"(#{rank:,.0f})"
 
 bar = '▁▂▃▄▅▆▇█'
 barcount = len(bar)
@@ -123,7 +130,16 @@ def search_ctrl(request_args, output_type):
 		df = df.head(5)
 
 		if not df.empty:
-			results = df.apply(lambda d: f"{d['name']} ({d['symbol'].upper()}) | {data['units_prefix']}{format_currency_num(d['current_price'])}{data['units_suffix']} | Mkt Cap: {data['units_prefix']}{format_currency_num(d['market_cap'])}{data['units_suffix']}", axis=1)
+			results = df.apply(lambda d: re.sub(r'\s+', ' ',
+			
+			f"""
+			{d['name']} ({d['symbol'].upper()}) | 
+			{data['units_prefix']}{format_currency_num(d['current_price'])}{data['units_suffix']} | 
+			Market Cap: {data['units_prefix']}{format_currency_num(d['market_cap'])}{data['units_suffix']}
+			{make_rank_text(d['market_cap_rank'])}
+			
+			""").strip(), axis=1)
+			
 			results = results.to_list()
 		else:
 			results = []

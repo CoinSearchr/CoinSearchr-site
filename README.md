@@ -6,7 +6,13 @@ CoinSearchr Flask site to serve the search engine
 * https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-20-04
 
 ## Common Tasks
-* Run the dev server like `python3 wsgi.py`, and access it through the nginx HTTPS port forwarder on https://coinsearchr.com:5001/
+### Run a Dev Server
+1. `source venv/bin/activate`
+2. `export FLASK_APP=coinsearchr` (optional)
+3. `export FLASK_ENV=development` (enables auto-reload and others)
+4. Run the dev server like `python3 wsgi.py`, and access it through the nginx HTTPS port forwarder on https://coinsearchr.com:5001/
+
+### Management
 * Do management actions with `python3 manage.py -h` (like `python3 manage.py -a init_db` and `python3 manage.py -a run_tasks`)
 
 ## Server Notes

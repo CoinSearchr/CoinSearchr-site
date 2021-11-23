@@ -41,7 +41,7 @@
 							</li>
 							<li class="list-group-item">
 								<span class="coin-data-label">Market Cap</span>
-								<span class="coin-data-value">{{ data['units_prefix']}}{{ trow['market_cap'] | format_currency_num }}{{ data['units_suffix']}} <span class="text-muted">(#{{ trow['market_cap_rank'] | int }})</span></span>
+								<span class="coin-data-value">{{ data['units_prefix']}}{{ trow['market_cap'] | format_currency_num }}{{ data['units_suffix']}} <span class="text-muted">{{ trow['market_cap_rank'] | make_rank_text }}</span></span>
 							</li>
 							<li class="list-group-item">
 								<span class="coin-data-label">24h Price</span>
@@ -106,7 +106,7 @@
 								</li>
 								<li class="list-group-item">
 									<span class="coin-data-label">Market Cap</span>
-									<span class="coin-data-value">{{ data['units_prefix']}}{{ row['market_cap'] | format_currency_num }}{{ data['units_suffix']}} <span class="text-muted">(#{{ row['market_cap_rank'] }})</span></span>
+									<span class="coin-data-value">{{ data['units_prefix']}}{{ row['market_cap'] | format_currency_num }}{{ data['units_suffix']}} <span class="text-muted">{{ row['market_cap_rank'] | make_rank_text }}</span></span>
 								</li>
 								<li class="list-group-item">
 									<span class="coin-data-label">24h Price</span>
