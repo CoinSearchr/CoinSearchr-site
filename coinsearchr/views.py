@@ -9,6 +9,7 @@ import datetime, time
 import re
 import os
 import humanize
+import pandas as pd
 
 @app.template_filter()
 def format_currency_num(num: float) -> str:
