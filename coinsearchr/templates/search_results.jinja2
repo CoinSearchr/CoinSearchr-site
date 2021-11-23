@@ -6,59 +6,58 @@
 
 	<div class="album py-5 bg-light">
 		<div class="container">
-			{% for _, row in df.head(1).iterrows() %}
+			{% if trow is not none %}
 				<div class="col">
 					<div class="card shadow-sm h-100">
-
-						<div class="row">
-							<div class="col-md-6">
-								<img src="{{ row['image'] }}" class="card-img-top crypto-logo mx-auto" alt="{{ row['name'] }} logo">
-							</div>
-
-							<div class="col-md-6">
-								<!-- Graph -->
-								{# TODO put a graph here with the sparkline data #}
-							</div>
-						</div>
-
-
-
+						{# Title (Coin Name) #}
 						<div class="card-body">
-							<h5 class="card-title">{{ row['name'] }} ({{ row['symbol'] | upper }})</h5>
-							<!-- <p class="card-text">This is a wider card with supporting text.</p> -->
+							<h5 class="card-title">{{ trow['name'] }} ({{ trow['symbol'] | upper }})</h5>
 							<div class="d-flex justify-content-between align-items-center">
 								<div class="btn-group">
-									<a role="button" href="https://www.coingecko.com/en/coins/{{ row['id'] }}" class="btn btn-sm btn-outline-primary">View on CoinGecko</a>
+									<a role="button" href="https://www.coingecko.com/en/coins/{{ trow['id'] }}" class="btn btn-sm btn-outline-primary">View on CoinGecko</a>
 									<button type="button" class="btn btn-sm btn-outline-primary">Quick Conversion</button>
 								</div>
 							</div>
 						</div>
 
+						{# Image and Graph #}
+						<div class="row">
+							<div class="col-md-3 p-3 crypto-logo-parent">
+								<img src="{{ trow['image'] }}" class="crypto-logo-top mx-auto" alt="{{ trow['name'] }} logo">
+							</div>
+
+							<div class="col-md-9 p-3">
+								<!-- Graph -->
+								<canvas id="top-price-chart-7d" class="price-chart price-chart-7d canvas-100pct"></canvas>
+
+
+							</div>
+						</div>
 
 						<ul class="list-group list-group-flush">
 							<li class="list-group-item">
 								<span class="coin-data-label">Price</span>
-								<span class="coin-data-value">{{ data['units_prefix']}}{{ row['current_price'] | format_currency_num }}{{ data['units_suffix']}}</span>
+								<span class="coin-data-value">{{ data['units_prefix']}}{{ trow['current_price'] | format_currency_num }}{{ data['units_suffix']}}</span>
 							</li>
 							<li class="list-group-item">
 								<span class="coin-data-label">Market Cap</span>
-								<span class="coin-data-value">{{ data['units_prefix']}}{{ row['market_cap'] | format_currency_num }}{{ data['units_suffix']}} <span class="text-muted">(#{{ row['market_cap_rank'] | int }})</span></span>
+								<span class="coin-data-value">{{ data['units_prefix']}}{{ trow['market_cap'] | format_currency_num }}{{ data['units_suffix']}} <span class="text-muted">(#{{ trow['market_cap_rank'] | int }})</span></span>
 							</li>
 							<li class="list-group-item">
 								<span class="coin-data-label">24h Price</span>
-								<span class="coin-data-value">{{ data['units_prefix']}}{{ row['low_24h'] | format_currency_num }}{{ data['units_suffix']}} to {{ data['units_prefix']}}{{ row['high_24h'] | format_currency_num }}{{ data['units_suffix']}}</span>
+								<span class="coin-data-value">{{ data['units_prefix']}}{{ trow['low_24h'] | format_currency_num }}{{ data['units_suffix']}} to {{ data['units_prefix']}}{{ trow['high_24h'] | format_currency_num }}{{ data['units_suffix']}}</span>
 							</li>
 						</ul>
 						
 						<div class="card-footer">
-							<small class="text-muted">Last updated {{ row['last_updated'] | time_ago }}</small> {# TODO change this to a JS auto-update thing for when people leave the tab open #}
+							<small class="text-muted">Last updated {{ trow['last_updated'] | time_ago }}</small> {# TODO change this to a JS auto-update thing for when people leave the tab open #}
 						</div>
 
 					</div>
 		
 				</div>
 
-			{% endfor %}
+			{% endif %}
 		</div>
 	</div>
 
@@ -82,7 +81,7 @@
 
 			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
 
-				{% for _, row in df.iloc[1:].iterrows() %}
+				{% for _, row in df.iterrows() %}
 					<div class="col">
 						<div class="card shadow-sm h-100">
 							<img src="{{ row['image'] }}" class="card-img-top crypto-logo mx-auto" alt="{{ row['name'] }} logo">
@@ -138,6 +137,21 @@
 			alert("Someone should implement this.");
 		}
 	</script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js" integrity="sha512-GMGzUEevhWh8Tc/njS0bDpwgxdCJLQBWG3Z2Ct+JGOpVnEmjvNx6ts4v6A2XJf1HOrtOsfhv3hBKpK9kE5z8AQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-adapter-moment/1.0.0/chartjs-adapter-moment.min.js" integrity="sha512-oh5t+CdSBsaVVAvxcZKy3XJdP7ZbYUBSRCXDTVn0ODewMDDNnELsrG9eDm8rVZAQg7RsDD/8K3MjPAFB13o6eA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	
+	<script src="{{ url_for('static', filename='js/search_results.js') }}"></script>
+
+	<script>
+		{% if trow is not none %}
+			const top_coin_index = '{{ trow["id"] }}';
+			make_top_chart(top_coin_index, 'usd', 7); // FIXME set the currency correctly (Issue #15)
+
+		{% endif %}
+	</script>
+
 
 {% endblock %}
 

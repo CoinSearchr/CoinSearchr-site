@@ -111,7 +111,13 @@ def search_ctrl(request_args, output_type):
 		return jsonify(df.to_dict('records'))
 
 	elif output_type == 'html':
-		return render_template("search_results.jinja2", df=df, data=data)
+		if len(df.index) > 0:
+			top_row = df.iloc[0]
+			df = df.iloc[1:] # remove first row
+		else:
+			top_row = None
+			
+		return render_template("search_results.jinja2", df=df, data=data, trow=top_row)
 
 	elif output_type == 'suggest_json':
 		df = df.head(5)

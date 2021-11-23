@@ -4,22 +4,35 @@ main > .container {
 	padding: 45px 15px 0;
 }
 
+/* Search Results Page */
+
 .crypto-logo {
 	max-width: min(250px, 50%);
 	height: 125px;
 	width: auto;
-
-	/*
-	height: auto;
-	width: 50%;
-	*/
 
 	margin: 20px;
 
 	/* image-rendering: pixelated; */
 	image-rendering: crisp-edges;
 	image-rendering: -moz-crisp-edges;
+}
 
+
+.crypto-logo-top {
+	max-width: min(250px, 80%);
+	width: auto;
+
+	margin: 20px;
+
+	/* image-rendering: pixelated; */
+	image-rendering: crisp-edges;
+	image-rendering: -moz-crisp-edges;
+}
+
+.crypto-logo-parent {
+	text-align: center;
+	vertical-align: middle;
 }
 
 .coin-data-label {
@@ -28,4 +41,12 @@ main > .container {
 .coin-data-value {
 	float: right;
 	font-weight: bold;
+}
+
+.canvas-100pct {
+	width: 100%;
+}
+
+.price-chart {
+	max-height: 30vh;
 }
