@@ -61,6 +61,13 @@ def make_rank_text(rank) -> str:
 	else:
 		return f"(#{rank:,.0f})"
 
+@app.template_filter('pluralize')
+def pluralize(number, singular = '', plural = 's'):
+    if number == 1:
+        return singular
+    else:
+        return plural
+
 bar = '▁▂▃▄▅▆▇█'
 barcount = len(bar)
 def sparkline(numbers: list) -> str:
@@ -178,6 +185,11 @@ def suggest():
 def convert():
 	# FIXME implement this Quick Convert page
 	return render_template("index.jinja2")
+
+
+@app.route('/contact')
+def contact():
+	return render_template("contact.jinja2")
 
 
 

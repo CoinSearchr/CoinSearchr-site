@@ -29,38 +29,48 @@
 	<body>
 
 		<header>
-			<div class="collapse bg-dark" id="navbarHeader">
-				<div class="container">
-					<div class="row">
-						<div class="col-sm-8 col-md-7 py-4">
-							<h4 class="text-white">About</h4>
-							<p class="text-muted">CoinSearchr is an up-and-coming cryptocurrency search tool, designed to fill the need for OpenSearch-compatible cryptocurrency search tools. 
-							It was created in 2021 by a disgruntled programmer who just wanted to search CoinMarketCap from Vivaldi Browser's command bar.</p>
-						</div>
-						<div class="col-sm-4 offset-md-1 py-4">
-							<h4 class="text-white">Contact</h4>
-							<ul class="list-unstyled">
-								<li><a href="https://reddit.com/u/coin-searchr" class="text-white" target="_blank">Discuss on Reddit</a></li>
-								<li><a href="mailto:coinsearchr+navbar@protonmail.com" class="text-white">Email CoinSearchr</a></li>
-								<li><a href="https://github.com/CoinSearchr/CoinSearchr-site" class="text-white" target="_blank">Contribute on GitHub</a></li>
-							</ul>
-							CoinSearchr loves feedback, so please provide all the feedback you can.
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="navbar navbar-dark bg-dark shadow-sm">
-				<div class="container">
+			<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+				<div class="container-fluid">
 					<a href="/" class="navbar-brand d-flex align-items-center">
 						<img src="/static/img/logo-48x48.png" width="48" height="48" alt="CoinSearchr" style="margin-right: 20px;" />
 						<strong>CoinSearchr</strong>
 					</a>
-					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
-						aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+						aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
+					<div class="collapse navbar-collapse" id="navbarCollapse">
+						<ul class="navbar-nav me-auto mb-2 mb-md-0">
+				
+							<li class="nav-item">
+								<a class="nav-link" href="/">Home</a>
+							</li>
+
+							<li class="nav-item">
+								<a class="nav-link" href="/convert">Quick Converter</a>
+							</li>
+
+							<li class="nav-item">
+								<a class="nav-link" href="/guide/">Add to Browser</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="/contact">Contact</a>
+							</li>
+						</ul>
+
+						<form method="GET" action="/search">
+							<div class="input-group me-3">
+								<input type="text" name="q" class="form-control" placeholder="Bitcoin, LTC, ..." aria-label="Enter cryptocurrency name to search" autofocus>
+								<div class="input-group-append">
+									<button class="btn btn-primary" type="submit">Search</button>
+								</div>
+							</div>
+						</form>
+
+					</div>
 				</div>
-			</div>
+			</nav>
 		</header>
 
 		<main>
@@ -74,7 +84,7 @@
 					<a href="#">Back to top</a>
 				</p>
 				--> {# TODO JS hide this if it's less than 2 screenfuls, but show otherwise #}
-				<p class="mb-1">&copy; CoinSearchr {{ now.year }}. <a href="{{ url_for('privacypolicy') }}">Privacy Policy.</a></p>
+				<p class="mb-1">&copy; CoinSearchr {{ now.year }} | <a href="{{ url_for('privacypolicy') }}">Privacy Policy</a> | <a href="{{ url_for('contact') }}">Contact</a></p>
 				<p class="mb-0">CoinSearchr is an up-and-coming cryptocurrency search tool, designed to fill the need for OpenSearch-compatible cryptocurrency search tools. It was created in 2021 by a disgruntled programmer who just wanted to search CoinMarketCap from Vivaldi Browser's command bar.</p>
 			</div>
 		</footer>

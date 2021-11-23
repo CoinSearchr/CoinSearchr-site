@@ -65,7 +65,7 @@
 		<div class="row py-lg-1">
 			<div class="col-lg-6 col-md-8 mx-auto">
 				<h1 class="fw-light">'{{ data["search_term"] }}' Search Results</h1>
-				<p class="lead text-muted">{{ df.index | length }}{{ data["show_plus_on_result_count"] }} cryptocurrency matches found.</p>
+				<p class="lead text-muted">{{ (df.index | length) + 1 }}{{ data["show_plus_on_result_count"] }} cryptocurrency match{{ ((df.index | length) + 1) | pluralize('', 'es') }} found.</p>
 				<!--
 				<p>
 					<a href="#" class="btn btn-primary my-2">Main call to action</a>
