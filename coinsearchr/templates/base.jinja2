@@ -90,11 +90,11 @@
 			<div class="container">
 				<!--
 				<p class="float-end mb-1">
-					<a href="#">Back to top</a>
+					<a href="#" class="link-dark">Back to top</a>
 				</p>
-				--> {# TODO JS hide this if it's less than 2 screenfuls, but show otherwise #}
-				<p class="mb-1">&copy; CoinSearchr {{ now.year }} | <a href="{{ url_for('privacypolicy') }}">Privacy Policy</a> | <a href="{{ url_for('contact') }}">Contact</a></p>
-				<p class="mb-0">CoinSearchr is an up-and-coming cryptocurrency search and conversion tool, designed to fill the need for OpenSearch-compatible cryptocurrency search tools. CoinSearchr fills the gap between your web browser's native search functionality, and existing coin explorers like CoinGecko. CoinSearchr was created in 2021 by a disgruntled programmer who just wanted to search CoinMarketCap from Vivaldi Browser's command bar.</p>
+				--> {# TODO JS hide "Back to top" button if it's less than 2 screenfuls, but show otherwise #}
+				<p class="mb-1">&copy; CoinSearchr {{ now.year }} | <a href="{{ url_for('privacypolicy') }}" class="link-dark">Privacy Policy</a> | <a href="{{ url_for('contact') }}" class="link-dark">Contact</a></p>
+				<p class="mb-0">CoinSearchr is an up-and-coming cryptocurrency search and conversion tool, designed to fill the need for <a href="https://developer.mozilla.org/en-US/docs/Web/OpenSearch" target="_blank" class="link-secondary text-decoration-none">OpenSearch-compatible</a> cryptocurrency search tools. CoinSearchr fills the gap between your web browser's native search functionality, and existing coin explorers like CoinGecko. CoinSearchr was created in 2021 by a disgruntled programmer who just wanted to search CoinMarketCap from Vivaldi Browser's command bar.</p>
 			</div>
 		</footer>
 

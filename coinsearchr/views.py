@@ -127,6 +127,7 @@ def search_ctrl(request_args, output_type):
 		return jsonify(df.to_dict('records'))
 
 	elif output_type == 'html':
+		data['row_count'] = len(df.index)
 		if len(df.index) > 0:
 			top_row = df.iloc[0]
 			df = df.iloc[1:] # remove first row
