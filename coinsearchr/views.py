@@ -11,8 +11,35 @@ import os
 import humanize
 import pandas as pd
 
+
 @app.template_filter()
 def format_currency_num(num: float) -> str:
+	""" Formats numbers nicely of all orders of magnitude. """
+	sigdigs = 5
+
+	if num == 0 or pd.isna(num):
+	 	return "0.00"
+
+	if num < 1e-5:
+		# sci notation (esp. for DOGE)
+		return humanize.scientific(num, precision=sigdigs-1)
+		# TODO improve the appearance of this sci notation with a better library
+
+	if num > 1e6:
+		return humanize.intword(num, "%0.3f")
+
+	prec = (sigdigs-1) - floor(log10(num))
+	prec = max(0, prec) # if prec < 0, set to 0 (i.e. if it's a very big number)
+
+	val = humanize.intcomma(num, prec)
+
+	if val.endswith('.0'):
+		val = val[:-2]
+	
+	return val
+
+@app.template_filter()
+def format_currency_num_old(num: float) -> str:
 	""" Formats numbers nicely of all orders of magnitude. """
 	# TODO replace this with the humanize library
 	def round_sig(x, sig=2):
