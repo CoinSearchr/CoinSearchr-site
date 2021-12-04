@@ -1,5 +1,7 @@
 # CoinSearchr-site
-CoinSearchr Flask site to serve the search engine
+CoinSearchr Flask site to serve the CoinSearchr search tool at https://coinsearchr.com/.
+
+CoinSearchr is a website which allows for easy searching/lookup of many cryptocurrencies. It is natively compatible with OpenSearch-compatible browsers like Firefox and Vivaldi.
 
 ## Guides
 * https://www.digitalocean.com/community/tutorials/how-to-make-a-web-application-using-flask-in-python-3
