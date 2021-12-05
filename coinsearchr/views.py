@@ -28,8 +28,12 @@ def format_currency_num(num: float) -> str:
 	if num > 1e6:
 		return humanize.intword(num, "%0.3f")
 
-	prec = (sigdigs-1) - floor(log10(num))
-	prec = max(0, prec) # if prec < 0, set to 0 (i.e. if it's a very big number)
+	prec = (sigdigs-1) - floor(log10(num)) # prec = number of digits to include after decimal point
+	prec = max(0, prec) # if prec < 0, set to 0 (i.e., if it's a very big number)
+
+	# $120.1 looks too weird, so change to $120.12
+	if prec == 1:
+		prec = 2
 
 	val = humanize.intcomma(num, prec)
 
