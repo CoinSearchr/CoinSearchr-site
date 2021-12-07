@@ -6,6 +6,7 @@ CoinSearchr is a website which allows for easy searching/lookup of many cryptocu
 ## Guides
 * https://www.digitalocean.com/community/tutorials/how-to-make-a-web-application-using-flask-in-python-3
 * https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-20-04
+* AWStats Setup: https://luxagraf.net/src/awstats-nginx-ubuntu-debian
 
 ## Common Tasks
 ### Run a Dev Server
