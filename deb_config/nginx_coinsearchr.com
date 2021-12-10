@@ -14,6 +14,11 @@ server {
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
     access_log /var/log/nginx/coinsearchr.com.access.log;
+
+    client_max_body_size 100M;
+    charset utf-8;
+
+    listen 127.0.0.1:8080; # for Tor Hidden Service
 }
 
 server {
