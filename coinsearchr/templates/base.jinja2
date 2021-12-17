@@ -1,3 +1,4 @@
+{% set active_page = active_page|default('unknown_page') -%}
 
 <!doctype html>
 <html lang="en" class="h-100">
@@ -24,6 +25,10 @@
 		
 		<!-- Custom styles for this template -->
 		<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+
+		<!-- DEBUG:
+		active_page: {{ active_page }}
+		-->
 	</head>
 	
 	<body>
@@ -71,7 +76,7 @@
 
 						<form method="GET" action="/search">
 							<div class="input-group me-3">
-								<input type="text" name="q" class="form-control" placeholder="Bitcoin, LTC, ..." aria-label="Enter cryptocurrency name to search">
+								<input type="text" name="q" class="form-control" placeholder="Bitcoin, LTC, ..." aria-label="Enter cryptocurrency name to search" {% if active_page != 'index' %}autofocus{% endif %}>
 								<div class="input-group-append">
 									<button class="btn btn-primary" type="submit">Search</button>
 								</div>
