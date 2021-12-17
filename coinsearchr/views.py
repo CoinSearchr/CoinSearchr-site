@@ -94,10 +94,10 @@ def make_rank_text(rank) -> str:
 
 @app.template_filter('pluralize')
 def pluralize(number, singular = '', plural = 's'):
-    if number == 1:
-        return singular
-    else:
-        return plural
+	if number == 1:
+		return singular
+	else:
+		return plural
 
 bar = '▁▂▃▄▅▆▇█'
 barcount = len(bar)
@@ -233,11 +233,13 @@ def guide_vivaldi():
 	return render_template("guide_vivaldi.jinja2")
 
 
-
-
 @app.route('/favicon.ico')
 def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static', 'img'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+	return send_from_directory(os.path.join(app.root_path, 'static', 'img'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+@app.route('/robots.txt')
+def robots_txt():
+	return send_from_directory(os.path.join(app.root_path, 'static', 'other'), 'robots.txt', mimetype='text/plain')
 
 @app.route('/privacy')
 @app.route('/privacypolicy')

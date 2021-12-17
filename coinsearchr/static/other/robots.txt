@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /suggest$
+Disallow: /suggest
+Disallow: /suggest/
+Disallow: /search$
