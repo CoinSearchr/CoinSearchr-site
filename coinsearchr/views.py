@@ -79,6 +79,8 @@ def time_ago(date_time) -> str:
 	now = datetime.datetime.now()
 	if type(date_time) is str:
 		date_time = datetime.datetime.fromisoformat(date_time)
+	if date_time is None:
+		return '?'
 	dif = humanize.naturaldelta(now - date_time)
 	if date_time <= now:
 		return dif + ' ago'
