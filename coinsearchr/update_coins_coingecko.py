@@ -9,7 +9,7 @@ from ratelimit import limits, RateLimitException
 from backoff import on_exception, expo
 import re
 
-from . import db
+from . import db, common
 
 logger = logging.getLogger(__name__)
 
@@ -71,13 +71,7 @@ def doCoinGeckoCoinListDetailedUpdate():
 			#df = df.drop(columns=['roi']) # try dropping that JSON column in case that's what's causing the overflow error
 			# TODO expand out 'roi' column from dict
 
-			def extract_re(regex, txt, group_number):
-				s = re.search(regex, txt)
-				try:
-					return s.group(group_number)
-				except:
-					return None
-			df['num_id'] = df['image'].apply(lambda txt: extract_re(r'/coins/images/(\d+)/[a-zA-Z]', txt, 1))
+			df['num_id'] = df['image'].apply(lambda txt: common.extract_re(r'/coins/images/(\d+)/[a-zA-Z]', txt, 1))
 			
 			try:
 				pangres.upsert(engine=sql_engine, df=df, table_name='coin_list_detail', if_row_exists='update', create_schema=False, add_new_columns=False, adapt_dtype_of_empty_db_columns=False)

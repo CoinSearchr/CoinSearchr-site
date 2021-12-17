@@ -7,7 +7,7 @@ CREATE TABLE coin_list (
 	id TEXT NOT NULL, 
 	symbol TEXT, 
 	name TEXT, 
-	date DATETIME, 
+	date DATETIME NOT NULL, 
 	PRIMARY KEY (source, id)
 );
 CREATE INDEX ix_coin_list_source ON coin_list (source);
@@ -53,7 +53,7 @@ CREATE TABLE coin_list_detail (
 	price_change_percentage_24h_in_currency FLOAT, 
 	price_change_percentage_7d_in_currency FLOAT, 
 	sparkline_in_7d TEXT, -- associative array with key 'price' containing an array of n prices
-	date DATETIME, 
+	date DATETIME NOT NULL, 
 	page_num BIGINT, 
 	PRIMARY KEY (source, base_currency, id)
 );
@@ -65,3 +65,22 @@ CREATE INDEX ix_coin_list_detail_name ON coin_list_detail (name);
 CREATE INDEX ix_coin_list_detail_symbol ON coin_list_detail (symbol);
 CREATE INDEX ix_coin_list_detail_date ON coin_list_detail (date);
 
+-- logo_list definition
+DROP TABLE IF EXISTS logo_list;
+CREATE TABLE logo_list (
+	source TEXT NOT NULL, 
+	title_text TEXT NOT NULL, 
+	link TEXT NOT NULL,
+	name TEXT NOT NULL, 
+	symbol TEXT NOT NULL, 
+	priority INT NOT NULL,
+	logo_contents TEXT,
+	file_type TEXT NOT NULL,
+
+	date DATETIME NOT NULL, 
+	PRIMARY KEY (source, name, symbol)
+);
+CREATE INDEX ix_logo_list_source ON logo_list (source);
+CREATE INDEX ix_logo_list_name ON logo_list (name);
+CREATE INDEX ix_logo_list_symbol ON logo_list (symbol);
+CREATE INDEX ix_logo_list_date ON logo_list (date);

@@ -19,6 +19,7 @@ sqlalchemy
 #sqlite3
 
 requests
+bs4
 
 pyyaml
 
