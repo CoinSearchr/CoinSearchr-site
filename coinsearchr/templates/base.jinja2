@@ -5,8 +5,12 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content="">
+		<meta name="description" content="CoinSearchr: Search for cryptocurrency info from your browser's native search bar. Search for market data and more for all cryptocurrencies.">
 		<meta name="author" content="CoinSearchr">
+		<meta name="robots" content="index, follow" />
+		<meta name="keywords" content="Cryptocurrency, Cryptocurrencies, Cryptocurrency Search, Search Engine, NFT, NFTs, Search Tool, CoinSearchr, Coin Searchr, Search, Bitcoin, Litecoin, Ethereum, Ether, Monero, Cryptocurrency Market, Market, Cryptocurrency Price, Cryptocurrency Logo">
+		
+		{% block head %} {% endblock %}
 		
 		<title>{% block title %} {% endblock %} | CoinSearchr</title>
 
@@ -37,7 +41,7 @@
 			<nav class="navbar navbar-expand-md navbar-dark bg-dark">
 				<div class="container-fluid">
 					<a href="/" class="navbar-brand d-flex align-items-center">
-						<img src="/static/img/logo-48x48.png" width="48" height="48" alt="CoinSearchr" style="margin-right: 20px;" />
+						<img src="/static/img/logo-48x48.png" width="48" height="48" alt="CoinSearchr Logo" style="margin-right: 20px;" />
 						<strong>CoinSearchr</strong>
 					</a>
 
@@ -99,10 +103,9 @@
 					<a href="#" class="link-dark">Back to top</a>
 				</p>
 				--> {# TODO JS hide "Back to top" button if it's less than 2 screenfuls, but show otherwise #}
-				<p class="mb-1">&copy; CoinSearchr {{ now.year }} | <a href="{{ url_for('privacypolicy') }}" class="link-dark">Privacy Policy</a> | <a href="{{ url_for('contact') }}" class="link-dark">Contact</a> | <a href="https://github.com/CoinSearchr/CoinSearchr-site" target="_blank" class="link-dark">GitHub</a> | <a href="https://github.com/CoinSearchr/CoinSearchr-site/blob/main/LICENSE" target="_blank" class="link-dark">License</a> | <a href="http://oelco65vtem2u4nvfsyjge6rnknfmp3up2azqu2h442we345frqg3eqd.onion/" class="link-dark">Tor Hidden Service</a></p>
-				<p class="mb-1">CoinSearchr is an up-and-coming cryptocurrency search tool, designed to fill the need for <a href="https://developer.mozilla.org/en-US/docs/Web/OpenSearch" target="_blank" class="link-secondary text-decoration-none">OpenSearch-compatible</a> cryptocurrency search tools.</p>
-				<p class="mb-1">CoinSearchr fills the gap between your web browser's native search functionality, and existing coin explorers like CoinGecko. CoinSearchr was created in 2021 by a disgruntled programmer who just wanted to search CoinMarketCap from Vivaldi Browser's command bar.</p>
-				<p class="mb-0">All CoinSearchr data is sourced from <a href="https://coingecko.com/" target="_blank" class="link-dark">CoinGecko</a>. CoinSearchr and CoinGecko assume no liability for any use of this website.</p>
+				<p class="mb-2">&copy; CoinSearchr {{ now.year }} | <a href="{{ url_for('privacypolicy') }}" class="link-dark">Privacy Policy</a> | <a href="{{ url_for('contact') }}" class="link-dark">Contact</a> | <a href="https://github.com/CoinSearchr/CoinSearchr-site" target="_blank" class="link-dark">GitHub</a> | <a href="https://github.com/CoinSearchr/CoinSearchr-site/blob/main/LICENSE" target="_blank" class="link-dark">License</a> | <a href="http://oelco65vtem2u4nvfsyjge6rnknfmp3up2azqu2h442we345frqg3eqd.onion/" class="link-dark">Tor Hidden Service</a></p>
+				<p class="mb-2">CoinSearchr is an <a href="https://developer.mozilla.org/en-US/docs/Web/OpenSearch" target="_blank" class="link-secondary text-decoration-none">OpenSearch-compatible</a> cryptocurrency search engine. Search for cryptocurrency info from your browser's native search bar.</p>
+				<p class="mb-0">CoinSearchr data is sourced from <a href="https://coingecko.com/" target="_blank" class="link-dark">CoinGecko</a>. CoinSearchr and CoinGecko assume no liability for use of this website.</p>
 			</div>
 		</footer>
 
