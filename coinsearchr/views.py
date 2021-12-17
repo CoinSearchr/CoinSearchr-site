@@ -231,11 +231,18 @@ def logo():
 
 	df = searcher.search_in_database(search_id=arg_search_id)
 
+	def send_question_mark():
+		with open(os.path.join(app.root_path, 'static', 'img', 'question-mark.svg'), 'rb') as fp:
+			resp = make_response(fp.read())
+			resp.headers['Content-Type'] = 'image/svg+xml'
+			return resp
+
 	if len(df.index) > 0:
 		row = df.iloc[0]
 	else:
-		raise Exception(f"Main database entry not found for id '{arg_search_id}'.")
-		# TODO return a question mark logo instead maybe; this never really comes up though, so a 500 page should be fine
+		#raise Exception(f"Main database entry not found for id '{arg_search_id}'.")
+		#return send_from_directory(os.path.join(app.root_path, 'static', 'img'), 'question-mark.svg', mimetype='image/svg+xml')
+		return send_question_mark()
 
 	# TODO do remapping here for ID's with different CoinGecko name/symbol than in the SVG database
 
@@ -251,8 +258,14 @@ def logo():
 
 	else:
 		# must make call to CoinGecko
+
+		if not row['image'].startswith('http'):
+			# no logo available from CoinGecko, return a static question mark
+			#return send_from_directory(os.path.join(app.root_path, 'static', 'img'), 'question-mark.svg', mimetype='image/svg+xml')
+			return send_question_mark()
+
 		# FIXME read from cache or similar (Issue #44)
-		req = common.call_url_max20sec(row['image'])
+		req = common.call_url_max5sec(row['image'])
 		logger.info("Had to request a logo directly from CoinGecko at load time. This should be avoided because the database cache.")
 
 		resp = make_response(req.content)
@@ -297,12 +310,12 @@ def guide_vivaldi():
 
 
 @app.route('/favicon.ico')
-@cache.cached(timeout=3600*24)
+#@cache.cached(timeout=3600*24)
 def favicon():
 	return send_from_directory(os.path.join(app.root_path, 'static', 'img'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route('/robots.txt')
-@cache.cached(timeout=3600*24)
+#@cache.cached(timeout=3600*24)
 def robots_txt():
 	return send_from_directory(os.path.join(app.root_path, 'static', 'other'), 'robots.txt', mimetype='text/plain')
 

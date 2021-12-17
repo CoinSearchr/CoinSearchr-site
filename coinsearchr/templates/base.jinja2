@@ -98,11 +98,11 @@
 
 		<footer class="text-muted py-5">
 			<div class="container">
-				<!--
+				
 				<p class="float-end mb-1">
-					<a href="#" class="link-dark">Back to top</a>
+					<a href="javascript:scrollToTop()" class="link-dark" id="scrollToTopBtn">Back to Top</a>
 				</p>
-				--> {# TODO JS hide "Back to top" button if it's less than 2 screenfuls, but show otherwise #}
+
 				<p class="mb-2">&copy; CoinSearchr {{ now.year }} | <a href="{{ url_for('privacypolicy') }}" class="link-dark">Privacy Policy</a> | <a href="{{ url_for('contact') }}" class="link-dark">Contact</a> | <a href="https://github.com/CoinSearchr/CoinSearchr-site" target="_blank" class="link-dark">GitHub</a> | <a href="https://github.com/CoinSearchr/CoinSearchr-site/blob/main/LICENSE" target="_blank" class="link-dark">License</a> | <a href="http://oelco65vtem2u4nvfsyjge6rnknfmp3up2azqu2h442we345frqg3eqd.onion/" class="link-dark">Tor Hidden Service</a></p>
 				<p class="mb-2">CoinSearchr is an <a href="https://developer.mozilla.org/en-US/docs/Web/OpenSearch" target="_blank" class="link-secondary text-decoration-none">OpenSearch-compatible</a> cryptocurrency search engine. Search for cryptocurrency info from your browser's native search bar.</p>
 				<p class="mb-0">CoinSearchr data is sourced from <a href="https://coingecko.com/" target="_blank" class="link-dark">CoinGecko</a>. CoinSearchr and CoinGecko assume no liability for use of this website.</p>
@@ -111,6 +111,8 @@
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		
+		<script src="{{ url_for('static', filename='js/common.js') }}"></script>
 		{% block tail_scripts %} {% endblock %}
 	</body>
 
