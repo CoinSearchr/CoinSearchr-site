@@ -125,9 +125,10 @@ def index():
 
 
 def search_ctrl(request_args, output_type):
-	arg_search_term_orig = request.args.get('q') # required for 'sanity check' by browser in suggestion mode
+	arg_search_term_orig = request.args.get('q', '') # required for 'sanity check' by browser in suggestion mode
 	arg_search_term = arg_search_term_orig.strip() # clean
 	arg_currency = request_args.get('currency', 'usd').lower().strip()
+	arg_search_id = request.args.get('id', '')
 
 	# remove garbage from search request from the suggestions
 	s = re.search(r'(.+)\s+[(].+[)] [|]', arg_search_term)
@@ -141,14 +142,25 @@ def search_ctrl(request_args, output_type):
 		# invalid currency, assume 'usd'
 		arg_currency = 'usd'
 
-	df = searcher.search_in_database_ranked(arg_search_term, arg_currency)
-	
+	if arg_search_term:
+		df = searcher.search_in_database_ranked(search_term=arg_search_term, currency=arg_currency)
+		result_type = 'search'
+	elif arg_search_id:
+		df = searcher.search_in_database_ranked(search_id=arg_search_id, currency=arg_currency)
+		result_type = 'id lookup'
+	else:
+		# no valid search term was given, error
+		df = searcher.search_in_database_ranked(search_id=None, search_term=None, currency=None) # force getting an empty dataframe with the right cols to return no search results
+		result_type = 'error'
+
+
 	data = {
 		'show_plus_on_result_count': '+' if len(df.index) >= db.max_query_results else '',
 		'search_term': arg_search_term,
 		'currency': arg_currency,
 		'units_prefix': '',
 		'units_suffix': '',
+		'result_type': result_type, # either 'search', 'id lookup', 'error'
 	}
 
 	data['units_prefix'] = db.config['currencies'][arg_currency]['prefix']
@@ -164,6 +176,9 @@ def search_ctrl(request_args, output_type):
 			df = df.iloc[1:] # remove first row
 		else:
 			top_row = None
+
+		if (result_type == 'id lookup') and (data['row_count'] > 0):
+			data['search_term'] = top_row['name'] + ' (' + top_row['symbol'].upper() + ')'
 			
 		return render_template("search_results.jinja2", df=df, data=data, trow=top_row)
 

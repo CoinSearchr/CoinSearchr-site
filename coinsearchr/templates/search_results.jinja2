@@ -1,12 +1,56 @@
 {% extends 'base.jinja2' %}
 
-{% block title %} '{{ data["search_term"] }}' Search {% endblock %}
+{% block title %}
+	{% if data['result_type'] == 'search' %}
+		'{{ data["search_term"] }}' Search
+	{% elif data['result_type'] == 'id lookup' %}
+		'{{ data["search_term"] }}' Details
+	{% else %}
+		Search Error
+	{% endif %}
+{% endblock %}
 
 {% block head %}
 	<meta http-equiv="refresh" content="900">
 {% endblock %}
 
 {% block content %}
+
+	{#
+	{% if data['result_type'] == 'id lookup' %}
+	<section class="py-3 text-center container">
+		<div class="row py-lg-1">
+			<div class="col-lg-6 col-md-8 mx-auto">
+				<h1 class="fw-light">'{{ data["search_term"] }}' Lookup</h1>
+				<!-- <p class="lead text-muted">{{ data["row_count"] }}{{ data["show_plus_on_result_count"] }} cryptocurrency match{{ data[row_count] | pluralize('', 'es') }} found.</p> -->
+				<!--
+				<p>
+					<a href="#" class="btn btn-primary my-2">Main call to action</a>
+					<a href="#" class="btn btn-secondary my-2">Secondary action</a>
+				</p>
+				-->
+			</div>
+		</div>
+	</section>
+	{% endif %}
+	#}
+
+	{% if data['result_type'] == 'error' %}
+	<section class="py-3 text-center container">
+		<div class="row py-lg-1">
+			<div class="col-lg-6 col-md-8 mx-auto">
+				<h1 class="fw-light">CoinSearchr - No Search Results</h1>
+				<p class="lead text-muted">An invalid search was attempted. Please try searching again using the search bar in the top right corner, or <a href="/">go home.</a></p>
+				<!--
+				<p>
+					<a href="#" class="btn btn-primary my-2">Main call to action</a>
+					<a href="#" class="btn btn-secondary my-2">Secondary action</a>
+				</p>
+				-->
+			</div>
+		</div>
+	</section>
+	{% endif %}
 
 	<div class="album py-5 bg-light">
 		<div class="container">
@@ -15,8 +59,8 @@
 					<div class="card shadow-sm h-100">
 						{# Title (Coin Name) #}
 						<div class="card-body">
-							<h5 class="card-title">{{ trow['name'] }} ({{ trow['symbol'] | upper }})</h5>
-							<div class="d-flex justify-content-between align-items-center">
+							<h2 class="card-title text-center"><a class="link-dark text-decoration-none" href="/search?id={{ trow['id']}}">{{ trow['name'] }} ({{ trow['symbol'] | upper }})</a></h2>
+							<div style="float: right;" class="d-flex justify-content-between">
 								<div class="btn-group">
 									<a role="button" href="https://www.coingecko.com/en/coins/{{ trow['id'] }}" class="btn btn-sm btn-outline-primary">View on CoinGecko</a>
 									{# <button type="button" class="btn btn-sm btn-outline-primary">Quick Conversion</button> #}
@@ -65,6 +109,7 @@
 		</div>
 	</div>
 
+	{% if data['result_type'] == 'search' %}
 	<section class="py-2 text-center container">
 		<div class="row py-lg-1">
 			<div class="col-lg-6 col-md-8 mx-auto">
@@ -79,6 +124,7 @@
 			</div>
 		</div>
 	</section>
+	{% endif %}
 
 	<div class="album py-5 bg-light">
 		<div class="container">
@@ -92,7 +138,7 @@
 
 
 							<div class="card-body">
-								<h5 class="card-title">{{ row['name'] }} ({{ row['symbol'] | upper }})</h5>
+								<h5 class="card-title text-center"><a class="link-dark text-decoration-none" href="/search?id={{ row['id']}}">{{ row['name'] }} ({{ row['symbol'] | upper }})</a></h5>
 								<!-- <p class="card-text">This is a wider card with supporting text.</p> -->
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">

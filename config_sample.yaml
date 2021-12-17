@@ -13,7 +13,7 @@ updaters:
     enable: true
 
 search:
-  max_query_results: 50
+  max_query_results: 49
 
 
 currencies:
