@@ -1,9 +1,15 @@
 // uses charts.js
 
-const default_base_currency = 'usd'; // TODO get this from cookie or URL (Issue #15)
+// const default_base_currency = 'usd'; // TODO get this from cookie or URL (Issue #15)
 const default_num_days = 7; // TODO get this from an input element
 
-function make_top_chart(coin_id, base_currency = default_base_currency, num_days = default_num_days) {
+/**
+ * Make the chart at the top of the search results page for the main target search result.
+ * 
+ * :param base_currency: case-insensitive, like 'usd'
+ */
+function make_top_chart(coin_id, base_currency, num_days = default_num_days) {
+	
 
 	$.get(
 		"https://api.coingecko.com/api/v3/coins/" + coin_id + "/market_chart",

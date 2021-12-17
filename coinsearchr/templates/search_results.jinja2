@@ -62,6 +62,7 @@
 							<h2 class="card-title text-center"><a class="link-dark text-decoration-none" href="/search?id={{ trow['id']}}">{{ trow['name'] }} ({{ trow['symbol'] | upper }})</a></h2>
 							<div style="float: right;" class="d-flex justify-content-between">
 								<div class="btn-group">
+									<a role="button" href="/search?id={{ trow['id']}}" class="btn btn-sm btn-outline-primary">View More Details</a>
 									<a role="button" href="https://www.coingecko.com/en/coins/{{ trow['id'] }}" class="btn btn-sm btn-outline-primary">View on CoinGecko</a>
 									{# <button type="button" class="btn btn-sm btn-outline-primary">Quick Conversion</button> #}
 								</div>
@@ -142,6 +143,7 @@
 								<!-- <p class="card-text">This is a wider card with supporting text.</p> -->
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">
+										<a role="button" href="/search?id={{ row['id']}}" class="btn btn-sm btn-outline-primary">View More Details</a>
 										<a role="button" href="https://www.coingecko.com/en/coins/{{ row['id'] }}" class="btn btn-sm btn-outline-primary">View on CoinGecko</a>
 										{# <button type="button" class="btn btn-sm btn-outline-primary">Quick Conversion</button> #}
 									</div>
@@ -196,8 +198,8 @@
 
 	<script>
 		{% if trow is not none %}
-			const top_coin_index = '{{ trow["id"] }}';
-			make_top_chart(top_coin_index, 'usd', 7); // FIXME set the currency correctly (Issue #15)
+			const top_coin_id = '{{ trow["id"] }}';
+			make_top_chart(top_coin_id, '{{ data["currency"] }}', 7);
 
 		{% endif %}
 	</script>

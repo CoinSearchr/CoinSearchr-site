@@ -18,8 +18,8 @@ def run_tasks():
 
 	logger.info('Starting all updates at the start.')
 	update_other_tasks.do_delete_old_coin_rows()
-	update_cryptologos.run_logo_update()
 	update_coins_coingecko.runAllCoinGeckoUpdates()
+	update_cryptologos.run_logo_update()
 	
 	
 	schedule.every(5).minutes.do(update_coins_coingecko.runAllCoinGeckoUpdates) # this long after the end of the previous 7-minute run
