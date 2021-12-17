@@ -1,8 +1,9 @@
 from flask import Flask, render_template, jsonify, request, make_response, url_for, send_from_directory
 
-from . import app
+from . import app, cache
 from . import searcher
 from . import db
+from . import common
 
 from math import log10, floor, isnan
 import datetime, time
@@ -10,7 +11,9 @@ import re
 import os
 import humanize
 import pandas as pd
+import logging
 
+logger = logging.getLogger(__name__)
 
 @app.template_filter()
 def format_currency_num(num: float) -> str:
@@ -121,6 +124,7 @@ def inject_global_vars():
 	}
 
 @app.route('/')
+@cache.cached(timeout=3600*24)
 def index():
 	return render_template("index.jinja2")
 
@@ -213,12 +217,51 @@ def search_ctrl(request_args, output_type):
 
 
 @app.route('/search', methods=['GET']) # args: q=search_term, json=true, currency=usd+, 
+@cache.cached(timeout=5, query_string=True)
 def search():
 	output_type = 'json' if request.args.get('json', 'false').lower() == 'true' else 'html'
 	return search_ctrl(request.args, output_type)
+
+# FIXME enable caching
+@app.route('/logo', methods=['GET']) # args: id=coin_id
+@cache.cached(timeout=3600*24, query_string=True)
+def logo():
+	""" Get logo based on ID. """
+	arg_search_id = request.args.get('id')
+
+	df = searcher.search_in_database(search_id=arg_search_id)
+
+	if len(df.index) > 0:
+		row = df.iloc[0]
+	else:
+		raise Exception(f"Main database entry not found for id '{arg_search_id}'.")
+		# TODO return a question mark logo instead maybe; this never really comes up though, so a 500 page should be fine
+
+	# TODO do remapping here for ID's with different CoinGecko name/symbol than in the SVG database
+
+	# try to get a vector logo from the SVG database
+	logo_info: dict = searcher.get_logo_from_database(name = row['name'], symbol = row['symbol'])
+
+	if logo_info:
+		# found in database
+		mimetype = 'image/svg+xml' if logo_info['file_type'] == 'svg' else 'svg' # TODO add support for other filetypes in the future
+		
+		resp = make_response(logo_info['logo_contents'])
+		resp.headers['Content-Type'] = mimetype
+
+	else:
+		# must make call to CoinGecko
+		# FIXME read from cache or similar (Issue #44)
+		req = common.call_url_max20sec(row['image'])
+		logger.info("Had to request a logo directly from CoinGecko at load time. This should be avoided because the database cache.")
+
+		resp = make_response(req.content)
+		resp.headers['Content-Type'] = req.headers.get('content-type')
 	
+	return resp
 
 @app.route('/suggest', methods=['GET']) # args: q=search_term
+@cache.cached(timeout=5, query_string=True)
 def suggest():
 	"""
 	Provide JSON search suggestions.
@@ -237,29 +280,35 @@ def convert():
 
 
 @app.route('/contact')
+@cache.cached(timeout=3600*24)
 def contact():
 	return render_template("contact.jinja2")
 
 
 @app.route('/guide/firefox')
+@cache.cached(timeout=3600*24)
 def guide_firefox():
 	return render_template("guide_firefox.jinja2")
 
 @app.route('/guide/vivaldi')
+@cache.cached(timeout=3600*24)
 def guide_vivaldi():
 	return render_template("guide_vivaldi.jinja2")
 
 
 @app.route('/favicon.ico')
+@cache.cached(timeout=3600*24)
 def favicon():
 	return send_from_directory(os.path.join(app.root_path, 'static', 'img'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route('/robots.txt')
+@cache.cached(timeout=3600*24)
 def robots_txt():
 	return send_from_directory(os.path.join(app.root_path, 'static', 'other'), 'robots.txt', mimetype='text/plain')
 
 @app.route('/privacy')
 @app.route('/privacypolicy')
 @app.route('/privacy-policy')
+@cache.cached(timeout=3600*24)
 def privacypolicy():
 	return render_template("privacypolicy.jinja2")

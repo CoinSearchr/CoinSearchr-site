@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block head %}
-	<meta http-equiv="refresh" content="900">
+	<!-- <meta http-equiv="refresh" content="900"> -->
 {% endblock %}
 
 {% block content %}
@@ -71,7 +71,7 @@
 						{# Image and Graph #}
 						<div class="row">
 							<div class="col-md-3 p-3 crypto-logo-parent">
-								<img src="{{ trow['image'] }}" class="crypto-logo-top mx-auto" alt="{{ trow['name'] }} logo">
+								<img src="/logo?id={{ trow['id'] }}" class="crypto-logo-top mx-auto" alt="{{ trow['name'] }} logo">
 							</div>
 
 							<div class="col-md-9 p-3">
@@ -134,7 +134,7 @@
 				{% for _, row in df.iterrows() %}
 					<div class="col">
 						<div class="card shadow-sm h-100">
-							<img src="{{ row['image'] }}" class="card-img-top crypto-logo mx-auto" alt="{{ row['name'] }} logo">
+								<img src="/logo?id={{ row['id'] }}" class="card-img-top crypto-logo mx-auto" alt="{{ row['name'] }} logo">
 
 
 							<div class="card-body">

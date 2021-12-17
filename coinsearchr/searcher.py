@@ -81,3 +81,22 @@ def search_in_database_ranked(currency: str = 'usd', search_term: str = None, se
 
 	return df
 	
+def get_logo_from_database(name: str, symbol: str) -> dict:
+	df = pd.read_sql_query(
+		"""
+		SELECT * FROM logo_list
+		WHERE (name LIKE ? AND symbol LIKE ?)
+		ORDER BY priority ASC
+		LIMIT 1
+		""",
+		params = (
+			name,
+			symbol
+		), # Note: Uses LIKE instead of '=' to avoid case-sensitive search
+		con=sql_engine
+	)
+
+	if len(df.index) > 0:
+		return df.iloc[0].to_dict()
+	else:
+		return {}
