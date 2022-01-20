@@ -21,11 +21,17 @@ logger = logging.getLogger(__name__)
 
 sql_engine = db.create_engine()
 
+class Error404(Exception):
+	def __init__(self, message=""):
+		super().__init__(message)
+
 @on_exception(expo, (RateLimitException, Exception), max_time=240, max_tries=10)
 @limits(calls=120, period=60) # arbitrary
 def call_api(url: str) -> str:
 	response = requests.get(url)
-	if response.status_code != 200:
+	if response.status_code == 404:
+		raise Error404(f'API response ({response.status_code}) to {url}')
+	elif response.status_code != 200:
 		raise Exception(f'API response ({response.status_code}) to {url}: {response.text}')
 	return response.content
 
@@ -33,7 +39,7 @@ def update_cryptologoscc_logos():
 	logger.info('Starting cryptologos.cc logos update.')
 	
 	base_link = 'https://cryptologos.cc/'
-	logo_list_html = call_api('https://gist.githubusercontent.com/CoinSearchr/6f5446c026d6f6c060bcbce830651d93/raw/82fd63e98716bd1e2219cea1141c2f4fcabcde04/cryptologoscc_scrape.html')
+	logo_list_html = call_api('https://gist.githubusercontent.com/CoinSearchr/6f5446c026d6f6c060bcbce830651d93/raw/cryptologoscc_scrape.html')
 	# This gist must be manually updated with the latest rendered version of the website, copied out of Inspect Element.
 
 	soup = BeautifulSoup(logo_list_html, 'html.parser')
@@ -82,7 +88,16 @@ def update_cryptologoscc_logos():
 	df['file_type'] = 'svg'
 	df['date'] = datetime.datetime.now()
 
-	df['logo_contents'] = df['link'].apply(lambda x: call_api(x).decode('utf-8')) # TODO make this happen in parallel, maybe
+	def load_logo_contents(url: str) -> str:
+		try:
+			return call_api(url).decode('utf-8')
+		except Error404:
+			return None
+
+	df['logo_contents'] = df['link'].apply(lambda url: load_logo_contents(url)) # TODO make this happen in parallel, maybe
+	
+	# filter out failed URL loads
+	df = df[pd.notna(df['logo_contents'])]
 
 	df = df.set_index(['name', 'symbol', 'source'])
 
@@ -93,7 +108,11 @@ def update_cryptologoscc_logos():
 
 def run_logo_update():
 	logger.info('Starting full logo update.')
-	update_cryptologoscc_logos()
+
+	try:
+		update_cryptologoscc_logos()
+	except Exception as err:
+		logger.error(f'Error running cryptologos.cc logo update: {err}.')
 	
 	logger.info('Done full logo update.')
 	
