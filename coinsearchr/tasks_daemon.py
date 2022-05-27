@@ -11,6 +11,7 @@ import logging
 from . import update_coins_coingecko
 from . import update_other_tasks
 from . import update_cryptologos
+from . import db
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +23,7 @@ def run_tasks():
 	update_cryptologos.run_logo_update()
 	
 	
-	schedule.every(5).minutes.do(update_coins_coingecko.runAllCoinGeckoUpdates) # this long after the end of the previous 7-minute run
+	schedule.every(db.config['updaters']['coingecko']['run_period_minutes']).minutes.do(update_coins_coingecko.runAllCoinGeckoUpdates) # this long after the end of the previous 7-minute run
 
 	schedule.every(6).hours.do(update_other_tasks.do_delete_old_coin_rows)
 

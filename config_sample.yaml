@@ -8,12 +8,16 @@ database:
 updaters:
   coingecko:
     enable: true
+    run_period_minutes: 15
 
   coinmarketcap:
     enable: true
+    run_period_minutes: 15
+
 
 search:
   max_query_results: 49
+  disable_search_page: true # force redirect to CoinGecko instead of showing results pages
 
 
 currencies:

@@ -68,7 +68,7 @@ def doCoinGeckoCoinListDetailedUpdate():
 
 			df = df.set_index(['source', 'base_currency', 'id'])
 
-			#df = df.drop(columns=['roi']) # try dropping that JSON column in case that's what's causing the overflow error
+			df = df.drop(columns=['roi']) # try dropping that JSON column in case that's what's causing the overflow error, and to save space
 			# TODO expand out 'roi' column from dict
 
 			df['num_id'] = df['image'].apply(lambda txt: common.extract_re(r'/coins/images/(\d+)/[a-zA-Z]', txt, 1))

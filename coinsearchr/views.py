@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, make_response, url_for, send_from_directory
+from flask import Flask, render_template, jsonify, request, make_response, url_for, send_from_directory, redirect
 
 from . import app, cache
 from . import searcher
@@ -150,10 +150,19 @@ def search_ctrl(request_args, output_type):
 		# invalid currency, assume 'usd'
 		arg_currency = 'usd'
 
+	coingecko_direct = 'https://coingecko.com/'
 	if arg_search_term:
+		coingecko_direct = f'https://www.coingecko.com/en/search?query={arg_search_term}'
+		if db.config['search']['disable_search_page'] and output_type == 'html':
+			return redirect(coingecko_direct, 302)
+
 		df = searcher.search_in_database_ranked(search_term=arg_search_term, currency=arg_currency)
 		result_type = 'search'
 	elif arg_search_id:
+		coingecko_direct = f'https://www.coingecko.com/en/coins/{arg_search_id}'
+		if db.config['search']['disable_search_page'] and output_type == 'html':
+			return redirect(coingecko_direct, 302)
+
 		df = searcher.search_in_database_ranked(search_id=arg_search_id, currency=arg_currency)
 		result_type = 'id lookup'
 	else:
@@ -168,6 +177,7 @@ def search_ctrl(request_args, output_type):
 		'currency': arg_currency,
 		'units_prefix': '',
 		'units_suffix': '',
+		'coingecko_direct': coingecko_direct,
 		'result_type': result_type, # either 'search', 'id lookup', 'error'
 	}
 
