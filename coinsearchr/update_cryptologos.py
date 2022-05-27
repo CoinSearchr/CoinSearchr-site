@@ -101,7 +101,7 @@ def update_cryptologoscc_logos():
 
 	df = df.set_index(['name', 'symbol', 'source'])
 
-	pangres.upsert(engine=sql_engine, df=df, table_name='logo_list', if_row_exists='update', create_schema=False, add_new_columns=False, adapt_dtype_of_empty_db_columns=False)
+	pangres.upsert(sql_engine, df=df, table_name='logo_list', if_row_exists='update', create_schema=False, add_new_columns=False, adapt_dtype_of_empty_db_columns=False)
 
 	logger.info(f'Done cryptologos.cc logos update ({len(df.index)} logos).')
 

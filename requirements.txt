@@ -14,7 +14,7 @@ Flask-Markdown
 
 pandas
 numpy
-pangres
+pangres>=4.1.1
 sqlalchemy
 #sqlite3
 

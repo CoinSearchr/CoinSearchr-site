@@ -37,7 +37,7 @@ def doCoinGeckoCoinListUpdate():
 
 	df = df.set_index(['source', 'id'])
 
-	pangres.upsert(engine=sql_engine, df=df, table_name='coin_list', if_row_exists='update', create_schema=False, add_new_columns=False, adapt_dtype_of_empty_db_columns=False)
+	pangres.upsert(sql_engine, df=df, table_name='coin_list', if_row_exists='update', create_schema=False, add_new_columns=False, adapt_dtype_of_empty_db_columns=False)
 
 
 	logger.info('Done CoinGecko coin list update.')
@@ -74,7 +74,7 @@ def doCoinGeckoCoinListDetailedUpdate():
 			df['num_id'] = df['image'].apply(lambda txt: common.extract_re(r'/coins/images/(\d+)/[a-zA-Z]', txt, 1))
 			
 			try:
-				pangres.upsert(engine=sql_engine, df=df, table_name='coin_list_detail', if_row_exists='update', create_schema=False, add_new_columns=False, adapt_dtype_of_empty_db_columns=False)
+				pangres.upsert(sql_engine, df=df, table_name='coin_list_detail', if_row_exists='update', create_schema=False, add_new_columns=False, adapt_dtype_of_empty_db_columns=False)
 			except Exception as err:
 				logger.error(f'Upsert failed. Error: {repr(err)}. Continuing to next set.')
 
