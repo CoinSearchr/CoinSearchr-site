@@ -15,6 +15,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+site_config = db.config['site']
+
 @app.template_filter()
 def format_currency_num(num: float) -> str:
 	""" Formats numbers nicely of all orders of magnitude. """
@@ -126,7 +128,7 @@ def inject_global_vars():
 @app.route('/')
 @cache.cached(timeout=3600*24)
 def index():
-	return render_template("index.jinja2")
+	return render_template("index.jinja2", site_config=site_config)
 
 
 
@@ -186,7 +188,7 @@ def search_ctrl(request_args, output_type):
 		if (result_type == 'id lookup') and (data['row_count'] > 0):
 			data['search_term'] = top_row['name'] + ' (' + top_row['symbol'].upper() + ')'
 			
-		return render_template("search_results.jinja2", df=df, data=data, trow=top_row)
+		return render_template("search_results.jinja2", df=df, data=data, trow=top_row, site_config=site_config)
 
 	elif output_type == 'suggest_json':
 		df = df.head(5)
@@ -289,24 +291,24 @@ def suggest():
 @app.route('/convert')
 def convert():
 	# FIXME implement this Quick Convert page
-	return render_template("index.jinja2")
+	return render_template("index.jinja2", site_config=site_config)
 
 
 @app.route('/contact')
 @cache.cached(timeout=3600*24)
 def contact():
-	return render_template("contact.jinja2")
+	return render_template("contact.jinja2", site_config=site_config)
 
 
 @app.route('/guide/firefox')
 @cache.cached(timeout=3600*24)
 def guide_firefox():
-	return render_template("guide_firefox.jinja2")
+	return render_template("guide_firefox.jinja2", site_config=site_config)
 
 @app.route('/guide/vivaldi')
 @cache.cached(timeout=3600*24)
 def guide_vivaldi():
-	return render_template("guide_vivaldi.jinja2")
+	return render_template("guide_vivaldi.jinja2", site_config=site_config)
 
 
 @app.route('/favicon.ico')
@@ -324,4 +326,4 @@ def robots_txt():
 @app.route('/privacy-policy')
 @cache.cached(timeout=3600*24)
 def privacypolicy():
-	return render_template("privacypolicy.jinja2")
+	return render_template("privacypolicy.jinja2", site_config=site_config)

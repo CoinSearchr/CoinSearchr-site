@@ -103,7 +103,7 @@
 					<a href="javascript:scrollToTop()" class="link-dark" id="scrollToTopBtn">Back to Top</a>
 				</p>
 
-				<p class="mb-2">&copy; CoinSearchr {{ now.year }} | <a href="{{ url_for('privacypolicy') }}" class="link-dark">Privacy Policy</a> | <a href="{{ url_for('contact') }}" class="link-dark">Contact</a> | <a href="https://github.com/CoinSearchr/CoinSearchr-site" target="_blank" class="link-dark">GitHub</a> | <a href="https://github.com/CoinSearchr/CoinSearchr-site/blob/main/LICENSE" target="_blank" class="link-dark">License</a> | <a href="http://oelco65vtem2u4nvfsyjge6rnknfmp3up2azqu2h442we345frqg3eqd.onion/" class="link-dark">Tor Hidden Service</a></p>
+				<p class="mb-2">&copy; CoinSearchr {{ now.year }} | <a href="{{ url_for('privacypolicy') }}" class="link-dark">Privacy Policy</a> | <a href="{{ url_for('contact') }}" class="link-dark">Contact</a> | <a href="https://github.com/CoinSearchr/CoinSearchr-site" target="_blank" class="link-dark">GitHub</a> | <a href="https://github.com/CoinSearchr/CoinSearchr-site/blob/main/LICENSE" target="_blank" class="link-dark">License</a> | <a href="http://{{ site_config['tor_hidden_service_hostname'] }}/" class="link-dark">Tor Hidden Service</a></p>
 				<p class="mb-2">CoinSearchr is an <a href="https://developer.mozilla.org/en-US/docs/Web/OpenSearch" target="_blank" class="link-secondary text-decoration-none">OpenSearch-compatible</a> cryptocurrency search engine. Search for cryptocurrency info from your browser's native search bar.</p>
 				<p class="mb-0">CoinSearchr data is sourced from <a href="https://coingecko.com/" target="_blank" class="link-dark">CoinGecko</a>. CoinSearchr and CoinGecko assume no liability for use of this website.</p>
 			</div>

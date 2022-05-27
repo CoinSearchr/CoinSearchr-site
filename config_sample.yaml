@@ -37,4 +37,8 @@ currencies:
     display: CAD
     prefix: 'CAD $'
     suffix: ''
+
     
+site:
+  tor_hidden_service_hostname: n5rx5q7sgrghl4ks6isuu7fbslivaf66ni7nm5non53zcr5j7n4lnyid.onion
+
