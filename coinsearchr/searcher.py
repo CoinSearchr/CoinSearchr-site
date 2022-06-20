@@ -21,9 +21,9 @@ def search_in_database(currency: str = 'usd', search_term: str = None, search_id
 		df = pd.read_sql_query(
 			"""
 			SELECT source, base_currency, id, symbol, name, image, current_price, market_cap, market_cap_rank, fully_diluted_valuation, 
-				total_volume, high_24h, low_24h, price_change_24h, price_change_percentage_24h, market_cap_change_24h, market_cap_change_percentage_24h,
+				total_volume, high_24h, low_24h, high_7d, low_7d, price_change_24h, price_change_percentage_24h, market_cap_change_24h, market_cap_change_percentage_24h,
 				circulating_supply, total_supply, max_supply, ath, ath_change_percentage, ath_date, atl, atl_change_percentage, atl_date, last_updated, 
-				price_change_percentage_1h_in_currency, price_change_percentage_24h_in_currency, price_change_percentage_7d_in_currency, date, page_num
+				price_change_percentage_1h_in_currency, price_change_percentage_24h_in_currency, price_change_percentage_7d_in_currency, sparkline_unicode_7d, sparkline_unicode_24h, date, page_num
 			FROM coin_list_detail
 			WHERE ((name LIKE ? OR symbol LIKE ?) AND base_currency = ?)
 			ORDER BY market_cap DESC LIMIT ? """,
@@ -40,9 +40,9 @@ def search_in_database(currency: str = 'usd', search_term: str = None, search_id
 		df = pd.read_sql_query(
 			"""
 			SELECT source, base_currency, id, symbol, name, image, current_price, market_cap, market_cap_rank, fully_diluted_valuation, 
-				total_volume, high_24h, low_24h, price_change_24h, price_change_percentage_24h, market_cap_change_24h, market_cap_change_percentage_24h,
+				total_volume, high_24h, low_24h, high_7d, low_7d, price_change_24h, price_change_percentage_24h, market_cap_change_24h, market_cap_change_percentage_24h,
 				circulating_supply, total_supply, max_supply, ath, ath_change_percentage, ath_date, atl, atl_change_percentage, atl_date, last_updated, 
-				price_change_percentage_1h_in_currency, price_change_percentage_24h_in_currency, price_change_percentage_7d_in_currency, date, page_num
+				price_change_percentage_1h_in_currency, price_change_percentage_24h_in_currency, price_change_percentage_7d_in_currency, sparkline_unicode_7d, sparkline_unicode_24h, date, page_num
 			FROM coin_list_detail
 			WHERE (id = ? AND base_currency = ?)
 			ORDER BY market_cap DESC LIMIT ? """,
@@ -58,9 +58,9 @@ def search_in_database(currency: str = 'usd', search_term: str = None, search_id
 		df = pd.read_sql_query(
 			"""
 			SELECT source, base_currency, id, symbol, name, image, current_price, market_cap, market_cap_rank, fully_diluted_valuation, 
-				total_volume, high_24h, low_24h, price_change_24h, price_change_percentage_24h, market_cap_change_24h, market_cap_change_percentage_24h,
+				total_volume, high_24h, low_24h, high_7d, low_7d, price_change_24h, price_change_percentage_24h, market_cap_change_24h, market_cap_change_percentage_24h,
 				circulating_supply, total_supply, max_supply, ath, ath_change_percentage, ath_date, atl, atl_change_percentage, atl_date, last_updated, 
-				price_change_percentage_1h_in_currency, price_change_percentage_24h_in_currency, price_change_percentage_7d_in_currency, date, page_num
+				price_change_percentage_1h_in_currency, price_change_percentage_24h_in_currency, price_change_percentage_7d_in_currency, sparkline_unicode_7d, sparkline_unicode_24h, date, page_num
 			FROM coin_list_detail
 			LIMIT 0 """,
 			con=sql_engine

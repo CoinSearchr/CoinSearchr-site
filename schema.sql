@@ -34,6 +34,8 @@ CREATE TABLE coin_list_detail (
 	total_volume FLOAT, 
 	high_24h FLOAT, 
 	low_24h FLOAT, 
+	high_7d FLOAT, 
+	low_7d FLOAT, 
 	price_change_24h FLOAT, 
 	price_change_percentage_24h FLOAT, 
 	market_cap_change_24h FLOAT, 
@@ -53,6 +55,8 @@ CREATE TABLE coin_list_detail (
 	price_change_percentage_24h_in_currency FLOAT, 
 	price_change_percentage_7d_in_currency FLOAT, 
 	sparkline_in_7d TEXT, -- associative array with key 'price' containing an array of n prices
+	sparkline_unicode_7d TEXT,
+	sparkline_unicode_24h TEXT,
 	date DATETIME NOT NULL, 
 	page_num BIGINT, 
 	PRIMARY KEY (source, base_currency, id)

@@ -1,5 +1,6 @@
-import logging
+#!/usr/bin/env python3
 
+import logging
 
 logging.basicConfig(format='%(asctime)s :: %(levelname)-8s :: %(name)s :: %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -17,6 +18,7 @@ if __name__ == '__main__':
 
     if args.action == 'init_db':
         init_db.init_db()
+        logger.info('Done init_db.')
 
     elif args.action == 'run_tasks':
         tasks_daemon.run_tasks()

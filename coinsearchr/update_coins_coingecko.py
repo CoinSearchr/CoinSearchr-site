@@ -1,10 +1,14 @@
 # Updates the Coin Gecko list of coins periodically
 
 import pandas as pd
+import numpy as np
+
 import requests
 import logging
 import pangres
 import datetime
+import json
+
 from ratelimit import limits, RateLimitException
 from backoff import on_exception, expo
 import re
@@ -48,7 +52,7 @@ def doCoinGeckoCoinListDetailedUpdate():
 
 	for currency in db.config['currencies'].keys(): # ['usd', ...]
 		pageNum = 1
-		while len(coinsList := call_api(f'https://api.coingecko.com/api/v3/coins/markets?vs_currency={currency}&order=market_cap_desc&per_page=240&page={pageNum}&sparkline=false&price_change_percentage=1h%2C24h%2C7d')) > 0:
+		while len(coinsList := call_api(f'https://api.coingecko.com/api/v3/coins/markets?vs_currency={currency}&order=market_cap_desc&per_page=240&page={pageNum}&sparkline=true&price_change_percentage=1h%2C24h%2C7d')) > 0:
 
 			df = pd.DataFrame(coinsList)
 
@@ -70,6 +74,31 @@ def doCoinGeckoCoinListDetailedUpdate():
 
 			df = df.drop(columns=['roi']) # try dropping that JSON column in case that's what's causing the overflow error, and to save space
 			# TODO expand out 'roi' column from dict
+
+			def apply_make_unicode_sparkline(sparkline: str, points_to_combine: int = 24, fine_points_to_keep: int = 168) -> str:
+				"""
+				# averaging guide: https://www.geeksforgeeks.org/averaging-over-every-n-elements-of-a-numpy-array/
+				
+				:param points_to_combine: how many points to combine into a single point (24 means every day turns into one bar)
+				:param fine_points_to_keep: minimum number of un-averaged points to keep in generation
+				"""
+				data: list = sparkline['price'] # json.loads(sparkline_7d) [use json loads if from database]
+				#data = [(x if pd.notna(x) else 0) for x in data]
+				data = [0]*(fine_points_to_keep*2) + data # add a bunch before in case the sparkline isn't long enough
+				#data = data[-common.round_down_to_nearest_multiple(len(data), points_to_combine):]
+				data = data[-fine_points_to_keep:]
+				if points_to_combine != 1:
+					data_small = list(np.average(np.array(data).reshape(-1, points_to_combine), axis=1))
+				else:
+					data_small = data
+				#print(f"data: {data}")
+				#print(f"smal: {data_small}")
+				return common.make_unicode_sparkline(data_small)
+			df['sparkline_unicode_7d'] = df['sparkline_in_7d'].apply(lambda sparkline: apply_make_unicode_sparkline(sparkline, points_to_combine=12, fine_points_to_keep=168))
+			df['sparkline_unicode_24h'] = df['sparkline_in_7d'].apply(lambda sparkline: apply_make_unicode_sparkline(sparkline, points_to_combine=1, fine_points_to_keep=24))
+
+			df['high_7d'] = df['sparkline_in_7d'].apply(lambda x: 0 if len(x['price']) == 0 else max(x['price']))
+			df['low_7d'] = df['sparkline_in_7d'].apply(lambda x: 0 if len(x['price']) == 0 else min(x['price']))
 
 			df['num_id'] = df['image'].apply(lambda txt: common.extract_re(r'/coins/images/(\d+)/[a-zA-Z]', txt, 1))
 			

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import Flask, render_template, jsonify, request, make_response, url_for, send_from_directory, redirect
 
 from . import app, cache
@@ -36,15 +38,19 @@ def format_currency_num(num: float) -> str:
 	prec = (sigdigs-1) - floor(log10(num)) # prec = number of digits to include after decimal point
 	prec = max(0, prec) # if prec < 0, set to 0 (i.e., if it's a very big number)
 
+	if prec == 0:
+		num = round(num) # required because of humanize.intcomma bug that doesn't do this rounding automatically
+
 	# $120.1 looks too weird, so change to $120.12
 	if prec == 1:
 		prec = 2
 
-	val = humanize.intcomma(num, prec)
+	val = humanize.intcomma(num, prec) # prec >= 1; if prec=0, then no rounding is done
 
 	if val.endswith('.0'):
 		val = val[:-2]
-	
+
+	# print(f"{type(num)} {num} -> prec:{prec} -> {val}") # debugging
 	return val
 
 @app.template_filter()
@@ -106,17 +112,6 @@ def pluralize(number, singular = '', plural = 's'):
 	else:
 		return plural
 
-bar = '▁▂▃▄▅▆▇█'
-barcount = len(bar)
-def sparkline(numbers: list) -> str:
-	""" Make a sparkline from a list of numbers. https://rosettacode.org/wiki/Sparkline_in_unicode""" 
-	mn, mx = min(numbers), max(numbers)
-	extent = mx - mn
-	sparkline = ''.join(bar[min([barcount - 1,
-								 int((n - mn) / extent * barcount)])]
-						for n in numbers)
-	#return mn, mx, sparkline
-	return sparkline
 
 @app.context_processor
 def inject_global_vars():
@@ -139,11 +134,12 @@ def search_ctrl(request_args, output_type):
 	arg_search_id = request.args.get('id', '')
 
 	# remove garbage from search request from the suggestions
-	s = re.search(r'(.+)\s+[(].+[)] [|]', arg_search_term)
+	s = re.search(r'^\s*(.+)\s+[(].+[)] [|]', arg_search_term, flags=re.UNICODE)
 	try:
 		arg_search_term = s.group(1)
 	except:
 		pass
+	# note: this section temporarily doesn't really work
 
 	# check if currency is valid, default if it's not valid
 	if arg_currency not in db.config['currencies'].keys():
@@ -169,7 +165,6 @@ def search_ctrl(request_args, output_type):
 		# no valid search term was given, error
 		df = searcher.search_in_database_ranked(search_id=None, search_term=None, currency=None) # force getting an empty dataframe with the right cols to return no search results
 		result_type = 'error'
-
 
 	data = {
 		'show_plus_on_result_count': '+' if len(df.index) >= db.max_query_results else '',
@@ -210,7 +205,9 @@ def search_ctrl(request_args, output_type):
 			{d['name']} ({d['symbol'].upper()}) | 
 			{data['units_prefix']}{format_currency_num(d['current_price'])}{data['units_suffix']} | 
 			Market Cap: {data['units_prefix']}{format_currency_num(d['market_cap'])}{data['units_suffix']}
-			{make_rank_text(d['market_cap_rank'])}
+			{make_rank_text(d['market_cap_rank'])} |
+			7d: {data['units_prefix']}{format_currency_num(d['low_7d'])}{data['units_suffix']} to {data['units_prefix']}{format_currency_num(d['high_7d'])}{data['units_suffix']} {d['sparkline_unicode_7d']} |
+			24h: {data['units_prefix']}{format_currency_num(d['low_24h'])}{data['units_suffix']} to {data['units_prefix']}{format_currency_num(d['high_24h'])}{data['units_suffix']} {d['sparkline_unicode_24h']}
 			
 			""").strip(), axis=1)
 			
