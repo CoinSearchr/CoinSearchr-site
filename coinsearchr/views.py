@@ -14,10 +14,14 @@ import os
 import humanize
 import pandas as pd
 import logging
+import random
+import cachetools
 
 logger = logging.getLogger(__name__)
 
 site_config = db.config['site']
+
+recent_suggestions = cachetools.TTLCache(maxsize=5000, ttl=600) # Behaves like dict. key: the long-form suggestion string. value: the coin ID
 
 @app.template_filter()
 def format_currency_num(num: float) -> str:
@@ -133,29 +137,30 @@ def search_ctrl(request_args, output_type):
 	arg_currency = request_args.get('currency', 'usd').lower().strip()
 	arg_search_id = request.args.get('id', '')
 
-	# remove garbage from search request from the suggestions
-	s = re.search(r'^\s*(.+)\s+[(].+[)] [|]', arg_search_term, flags=re.UNICODE)
-	try:
-		arg_search_term = s.group(1)
-	except:
-		pass
-	# note: this section temporarily doesn't really work
-
 	# check if currency is valid, default if it's not valid
 	if arg_currency not in db.config['currencies'].keys():
 		# invalid currency, assume 'usd'
 		arg_currency = 'usd'
 
+	# check to see if we're looking up a specific search result
+	if arg_search_term in recent_suggestions.keys():
+		arg_search_id = recent_suggestions[arg_search_term]
+		arg_search_term = None # cancel the search by search term basically
+
 	coingecko_direct = 'https://coingecko.com/'
 	if arg_search_term:
-		coingecko_direct = f'https://www.coingecko.com/en/search?query={arg_search_term}'
+
+		# remove garbage from search request from the suggestions
+		arg_search_term = arg_search_term.split(' (')[0]
+		
+		coingecko_direct = f'https://www.coingecko.com/en/search?query={arg_search_term}&utm_source=coinsearchr&utm_medium=search'
 		if db.config['search']['disable_search_page'] and output_type == 'html':
 			return redirect(coingecko_direct, 302)
 
 		df = searcher.search_in_database_ranked(search_term=arg_search_term, currency=arg_currency)
 		result_type = 'search'
 	elif arg_search_id:
-		coingecko_direct = f'https://www.coingecko.com/en/coins/{arg_search_id}'
+		coingecko_direct = f'https://www.coingecko.com/en/coins/{arg_search_id}?utm_source=coinsearchr&utm_medium=suggest'
 		if db.config['search']['disable_search_page'] and output_type == 'html':
 			return redirect(coingecko_direct, 302)
 
@@ -199,7 +204,7 @@ def search_ctrl(request_args, output_type):
 		df = df.head(5)
 
 		if not df.empty:
-			results = df.apply(lambda d: re.sub(r'\s+', ' ',
+			suggestions = df.apply(lambda d: (re.sub(r'\s+', ' ',
 			
 			f"""
 			{d['name']} ({d['symbol'].upper()}) | 
@@ -209,9 +214,16 @@ def search_ctrl(request_args, output_type):
 			7d: {data['units_prefix']}{format_currency_num(d['low_7d'])}{data['units_suffix']} to {data['units_prefix']}{format_currency_num(d['high_7d'])}{data['units_suffix']} {d['sparkline_unicode_7d']} |
 			24h: {data['units_prefix']}{format_currency_num(d['low_24h'])}{data['units_suffix']} to {data['units_prefix']}{format_currency_num(d['high_24h'])}{data['units_suffix']} {d['sparkline_unicode_24h']}
 			
-			""").strip(), axis=1)
-			
-			results = results.to_list()
+			""").strip(), d['id']), axis=1) # 2-tuple of: (suggestion, id)
+
+			# prevent the dict from getting too big
+			if random.random() < 1/5000:
+				recent_suggestions.clear()
+
+			suggest_dict = {i[0]: i[1] for i in suggestions}
+			recent_suggestions.update(suggest_dict)
+
+			results = list(suggest_dict.keys())
 		else:
 			results = []
 
