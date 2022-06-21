@@ -68,6 +68,8 @@ def search_in_database(currency: str = 'usd', search_term: str = None, search_id
 		
 	app.logger.info(f'Database query took {(time.time() - stime)*1000:.0f}ms.')
 
+	df['date'] = pd.to_datetime(df['date'])
+
 	return df
 
 def search_in_database_ranked(currency: str = 'usd', search_term: str = None, search_id: str = None) -> pd.DataFrame:

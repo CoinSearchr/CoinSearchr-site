@@ -147,6 +147,16 @@ def search_ctrl(request_args, output_type):
 		arg_search_id = recent_suggestions[arg_search_term]
 		arg_search_term = None # cancel the search by search term basically
 
+	# early exit search results
+	if arg_search_term and output_type == 'html':
+		if 'Data out of date' in arg_search_term or arg_search_term.lower() == 'contact':
+			return redirect(url_for('contact'), 302)
+		if 'No results found' in arg_search_term or arg_search_term.lower() == 'home':
+			return redirect(url_for('index'), 302)
+		if arg_search_term.lower() == 'top':
+			return redirect('https://coingecko.com/')
+
+
 	coingecko_direct = 'https://coingecko.com/'
 	if arg_search_term:
 
@@ -216,16 +226,21 @@ def search_ctrl(request_args, output_type):
 			
 			""").strip(), d['id']), axis=1) # 2-tuple of: (suggestion, id)
 
-			# prevent the dict from getting too big
-			if random.random() < 1/5000:
-				recent_suggestions.clear()
-
+			# store the suggestions in the suggestion cache
 			suggest_dict = {i[0]: i[1] for i in suggestions}
 			recent_suggestions.update(suggest_dict)
 
 			results = list(suggest_dict.keys())
+
+			### Add on warning about it not being up-to-date if it's not
+			latest_update = df['date'].max()
+			tdelta = datetime.datetime.now() - latest_update
+			if tdelta > datetime.timedelta(minutes=20):
+				results = results[:4] # many browsers only show 5 "suggestions"
+				results.append(f"⚠️ Warning: Data out of date. Data last updated {humanize.naturaltime(latest_update)}. Contact support (click here).")
+				app.logger.info(f"Telling user that the data is out of date. Data last updated {humanize.naturaltime(latest_update)}.")
 		else:
-			results = []
+			results = ["No results found."]
 
 		out = [
 			arg_search_term_orig,
